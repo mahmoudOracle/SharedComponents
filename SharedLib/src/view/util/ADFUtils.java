@@ -187,7 +187,8 @@ public class ADFUtils {
 
 
 /** function used to rollback any changes to the last commit point without changing current row of the passed iterator*/
-  public void rollbackAndBeInTheCurrentRow(String iteratorName)
+  
+  public static void rollbackAndBeInTheCurrentRow(String iteratorName)
   {
     try
     {
