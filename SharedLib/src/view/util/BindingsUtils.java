@@ -20,14 +20,14 @@ import javax.el.ValueExpression;
 public class BindingsUtils {
 
     // same as ADFUtils.findBindingContainer(String pageDefName) but public
-    public static BindingContainer findBindingContainer(String pageDefName) {
+    public  BindingContainer findBindingContainer(String pageDefName) {
         BindingContext bctx = ADFUtils.getDCBindingContainer().getBindingContext();
         BindingContainer foundContainer =
             bctx.findBindingContainer(pageDefName);
         return foundContainer;
     }
     
-    public static Object getAttributeByBindings_listOfValues(String listOfValuesName, String attrName){
+    public  Object getAttributeByBindings_listOfValues(String listOfValuesName, String attrName){
         BindingContext bindingContext = BindingContext.getCurrent();
         BindingContainer bindings = bindingContext.getCurrentBindingsEntry();
         JUCtrlListBinding list = (JUCtrlListBinding) bindings.get(listOfValuesName);
@@ -41,11 +41,11 @@ public class BindingsUtils {
      * @param pageUsageId
      * @return
      */
-    public static BindingContainer getBindingsContOfOtherPage(String pageUsageId) {
+    public  BindingContainer getBindingsContOfOtherPage(String pageUsageId) {
         return (BindingContainer) ExpressionUtils.evaluateEL("#{data." + pageUsageId + "}");
     }
     
-    public static MethodBinding getMethodBinding(String functionName) {
+    public  MethodBinding getMethodBinding(String functionName) {
         try {
             Class[] parms = new Class[] { ValueChangeEvent.class };
             MethodBinding mb =

@@ -142,12 +142,14 @@ import org.apache.myfaces.trinidad.model.UploadedFile;
 public class ADFUtils {
 
 
-    private  ServletContext getContext() {
-        return (ServletContext) IteratorUtils.getFacesContext().getExternalContext().getContext();
+    private ServletContext getContext() {
+        return (ServletContext) IteratorUtils.getFacesContext()
+                                             .getExternalContext()
+                                             .getContext();
     }
 
 
-    public static Object invokeMethodExpression(String expr, Class returnType, Class[] argTypes, Object[] args) {
+    public Object invokeMethodExpression(String expr, Class returnType, Class[] argTypes, Object[] args) {
         FacesContext fc = FacesContext.getCurrentInstance();
         ELContext elctx = fc.getELContext();
         ExpressionFactory elFactory = fc.getApplication().getExpressionFactory();
@@ -155,12 +157,12 @@ public class ADFUtils {
         return methodExpr.invoke(elctx, args);
     }
 
-    public static Object invokeMethodExpression(String expr, Class returnType, Class argType, Object argument) {
+    public Object invokeMethodExpression(String expr, Class returnType, Class argType, Object argument) {
         return invokeMethodExpression(expr, returnType, new Class[] { argType }, new Object[] { argument });
     }
 
 
-    public static final ADFLogger LOGGER = ADFLogger.createADFLogger(ADFUtils.class);
+    public final ADFLogger LOGGER = ADFLogger.createADFLogger(ADFUtils.class);
 
 
     /**
@@ -174,7 +176,7 @@ public class ADFUtils {
      * Use this method to issue a commit in the middle of a task flow
      * while staying in the task flow.
      */
-    public static void saveAndContinue() {
+    public void saveAndContinue() {
         Map sessionMap = FacesContext.getCurrentInstance()
                                      .getExternalContext()
                                      .getSessionMap();
@@ -186,33 +188,24 @@ public class ADFUtils {
     }
 
 
-/** function used to rollback any changes to the last commit point without changing current row of the passed iterator*/
-  
-  public static void rollbackAndBeInTheCurrentRow(String iteratorName)
-  {
-    try
-    {
-      DCIteratorBinding locationsIter = IteratorUtils.findIterator(iteratorName);
-      Row lRow = locationsIter.getCurrentRow();
-      Key key = null;
-      if (lRow != null)
-      {
-        key = lRow.getKey();
-      }
-      IteratorUtils.executeOperationBinding("Rollback");
-      if (key != null)
-      {
-        locationsIter.setCurrentRowWithKey(key.toStringFormat(true));
-      }
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-    }
-  }
+    /** function used to rollback any changes to the last commit point without changing current row of the passed iterator*/
 
-  
-
+    public void rollbackAndBeInTheCurrentRow(String iteratorName) {
+        try {
+            DCIteratorBinding locationsIter = IteratorUtils.findIterator(iteratorName);
+            Row lRow = locationsIter.getCurrentRow();
+            Key key = null;
+            if (lRow != null) {
+                key = lRow.getKey();
+            }
+            IteratorUtils.executeOperation("Rollback");
+            if (key != null) {
+                locationsIter.setCurrentRowWithKey(key.toStringFormat(true));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -230,19 +223,19 @@ public class ADFUtils {
      * @param attributeName of the bound value in the pageDef
      * @return value of the attribute
      */
-    public static Object getBoundAttributeValue(String attributeName) {
+    public Object getBoundAttributeValue(String attributeName) {
         return findControlBinding(attributeName).getInputValue();
     }
-	
-	/** function take iterator name and attribute name then return the value of the attribute from the current row of the iterator */
-  public Object getAttributeFromIterator(String iteratorName, String attributeName)
-  {
-    if (IteratorUtils.findIterator(iteratorName).getCurrentRow() != null)
-    {
-      return IteratorUtils.findIterator(iteratorName).getCurrentRow().getAttribute(attributeName);
+
+    /** function take iterator name and attribute name then return the value of the attribute from the current row of the iterator */
+    public Object getAttributeFromIterator(String iteratorName, String attributeName) {
+        if (IteratorUtils.findIterator(iteratorName).getCurrentRow() != null) {
+            return IteratorUtils.findIterator(iteratorName)
+                                .getCurrentRow()
+                                .getAttribute(attributeName);
+        }
+        return null;
     }
-    return null;
-  }
 
     /**
      * A convenience method for setting the value of a bound attribute in the
@@ -250,26 +243,26 @@ public class ADFUtils {
      * @param attributeName of the bound value in the pageDef
      * @param value to set
      */
-    public static void setBoundAttributeValue(String attributeName, Object value) {
+    public void setBoundAttributeValue(String attributeName, Object value) {
         findControlBinding(attributeName).setInputValue(value);
     }
 
-	/** function take iterator name and attribute name and value then set this value to the attribute in the current row of the iterator */
-  public void setAttributeInIterator(String iteratorName, String attributeName, Object value)
-  {
-    if (IteratorUtils.findIterator(iteratorName).getCurrentRow() != null)
-    {
-      IteratorUtils.findIterator(iteratorName).getCurrentRow().setAttribute(attributeName, value);
+    /** function take iterator name and attribute name and value then set this value to the attribute in the current row of the iterator */
+    public void setAttributeInIterator(String iteratorName, String attributeName, Object value) {
+        if (IteratorUtils.findIterator(iteratorName).getCurrentRow() != null) {
+            IteratorUtils.findIterator(iteratorName)
+                         .getCurrentRow()
+                         .setAttribute(attributeName, value);
+        }
     }
-  }
-	
+
     /**
      * Returns the evaluated value of a pageDef parameter.
      * @param pageDefName reference to the page definition file of the page with the parameter
      * @param parameterName name of the pagedef parameter
      * @return evaluated value of the parameter as a String
      */
-    public static Object getPageDefParameterValue(String pageDefName, String parameterName) {
+    public Object getPageDefParameterValue(String pageDefName, String parameterName) {
         BindingContainer bindings = findBindingContainer(pageDefName);
         DCParameter param = ((DCBindingContainer) bindings).findParameter(parameterName);
         return param.getValue();
@@ -283,7 +276,7 @@ public class ADFUtils {
      * @return the control value binding with the name passed in.
      *
      */
-    public static AttributeBinding findControlBinding(BindingContainer bindingContainer, String attributeName) {
+    public AttributeBinding findControlBinding(BindingContainer bindingContainer, String attributeName) {
         if (attributeName != null) {
             if (bindingContainer != null) {
                 ControlBinding ctrlBinding = bindingContainer.getControlBinding(attributeName);
@@ -302,7 +295,7 @@ public class ADFUtils {
      * @return the control value binding with the name passed in.
      *
      */
-    public static AttributeBinding findControlBinding(String attributeName) {
+    public AttributeBinding findControlBinding(String attributeName) {
         return findControlBinding(getBindingContainer(), attributeName);
     }
 
@@ -333,8 +326,7 @@ public class ADFUtils {
      * @param displayAttrName name of the attribute from iterator rows to display
      * @return ADF Faces SelectItem for an iterator binding
      */
-    public static List<SelectItem> selectItemsForIterator(String iteratorName, String valueAttrName,
-                                                          String displayAttrName) {
+    public List<SelectItem> selectItemsForIterator(String iteratorName, String valueAttrName, String displayAttrName) {
         return selectItemsForIterator(IteratorUtils.findIterator(iteratorName), valueAttrName, displayAttrName);
     }
 
@@ -350,9 +342,10 @@ public class ADFUtils {
      * @param descriptionAttrName name of the attribute to use for description
      * @return ADF Faces SelectItem for an iterator binding with description
      */
-    public static List<SelectItem> selectItemsForIterator(String iteratorName, String valueAttrName,
-                                                          String displayAttrName, String descriptionAttrName) {
-        return selectItemsForIterator(IteratorUtils.findIterator(iteratorName), valueAttrName, displayAttrName, descriptionAttrName);
+    public List<SelectItem> selectItemsForIterator(String iteratorName, String valueAttrName, String displayAttrName,
+                                                   String descriptionAttrName) {
+        return selectItemsForIterator(IteratorUtils.findIterator(iteratorName), valueAttrName, displayAttrName,
+                                      descriptionAttrName);
     }
 
     /**
@@ -366,8 +359,8 @@ public class ADFUtils {
      * @param displayAttrNames array of attribute names from iterator rows to display
      * @return ADF Faces SelectItem for an iterator binding
      */
-    public static List<SelectItem> selectItemsForIterator(DCIteratorBinding iter, String valueAttrName,
-                                                          String[] displayAttrNames) {
+    public List<SelectItem> selectItemsForIterator(DCIteratorBinding iter, String valueAttrName,
+                                                   String[] displayAttrNames) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for (Row r : iter.getAllRowsInRange()) {
             StringBuilder buf = new StringBuilder();
@@ -393,8 +386,8 @@ public class ADFUtils {
      * @param displayAttrNames array of attribute names from iterator rows to display
      * @return ADF Faces SelectItem for an iterator binding
      */
-    public static List<SelectItem> selectItemsForIterator(String iteratorName, String valueAttrName,
-                                                          String[] displayAttrNames) {
+    public List<SelectItem> selectItemsForIterator(String iteratorName, String valueAttrName,
+                                                   String[] displayAttrNames) {
         return selectItemsForIterator(IteratorUtils.findIterator(iteratorName), valueAttrName, displayAttrNames);
     }
 
@@ -411,8 +404,8 @@ public class ADFUtils {
      * @param descriptionAttrName name of the attribute for description
      * @return ADF Faces SelectItem for an iterator binding with description
      */
-    public static List<SelectItem> selectItemsForIterator(DCIteratorBinding iter, String valueAttrName,
-                                                          String displayAttrName, String descriptionAttrName) {
+    public List<SelectItem> selectItemsForIterator(DCIteratorBinding iter, String valueAttrName, String displayAttrName,
+                                                   String descriptionAttrName) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for (Row r : iter.getAllRowsInRange()) {
             selectItems.add(new SelectItem(r.getAttribute(valueAttrName), (String) r.getAttribute(displayAttrName),
@@ -432,8 +425,8 @@ public class ADFUtils {
      * @param displayAttrName name of the attribute from iterator rows to display
      * @return ADF Faces SelectItem for an iterator binding
      */
-    public static List<SelectItem> selectItemsForIterator(DCIteratorBinding iter, String valueAttrName,
-                                                          String displayAttrName) {
+    public List<SelectItem> selectItemsForIterator(DCIteratorBinding iter, String valueAttrName,
+                                                   String displayAttrName) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for (Row r : iter.getAllRowsInRange()) {
             selectItems.add(new SelectItem(r.getAttribute(valueAttrName), (String) r.getAttribute(displayAttrName)));
@@ -447,7 +440,7 @@ public class ADFUtils {
      * @param valueAttrName value attribute to use
      * @return List of attribute values for an iterator
      */
-    public static List attributeListForIterator(String iteratorName, String valueAttrName) {
+    public List attributeListForIterator(String iteratorName, String valueAttrName) {
         return attributeListForIterator(IteratorUtils.findIterator(iteratorName), valueAttrName);
     }
 
@@ -458,7 +451,7 @@ public class ADFUtils {
      * @param valueAttrName name of value attribute to use
      * @return List of attribute values
      */
-    public static List attributeListForIterator(DCIteratorBinding iter, String valueAttrName) {
+    public List attributeListForIterator(DCIteratorBinding iter, String valueAttrName) {
         List attributeList = new ArrayList();
         for (Row r : iter.getAllRowsInRange()) {
             attributeList.add(r.getAttribute(valueAttrName));
@@ -472,7 +465,7 @@ public class ADFUtils {
      * @param attrNames array of attribute names for attributes to be retrieved
      * @return List of attribute values for an iterator
      */
-    public static List<Map<String, Object>> attributeListForIterator(String iteratorName, String[] attrNames) {
+    public List<Map<String, Object>> attributeListForIterator(String iteratorName, String[] attrNames) {
         return attributesListForIterator(IteratorUtils.findIterator(iteratorName), attrNames);
     }
 
@@ -482,7 +475,7 @@ public class ADFUtils {
      * @param iteratorName iterabot binding name
      * @return List of Key objects for rows
      */
-    public static List<Key> keyListForIterator(String iteratorName) {
+    public List<Key> keyListForIterator(String iteratorName) {
         return keyListForIterator(IteratorUtils.findIterator(iteratorName));
     }
 
@@ -491,7 +484,7 @@ public class ADFUtils {
      * @param iter iterator binding
      * @return List of Key objects for rows
      */
-    public static List<Key> keyListForIterator(DCIteratorBinding iter) {
+    public List<Key> keyListForIterator(DCIteratorBinding iter) {
         List<Key> attributeList = new ArrayList<Key>();
         for (Row r : iter.getAllRowsInRange()) {
             attributeList.add(r.getKey());
@@ -505,7 +498,7 @@ public class ADFUtils {
      * @param keyAttrName name of key attribute to use
      * @return List of Key objects for rows
      */
-    public static List<Key> keyAttrListForIterator(String iteratorName, String keyAttrName) {
+    public List<Key> keyAttrListForIterator(String iteratorName, String keyAttrName) {
         return keyAttrListForIterator(IteratorUtils.findIterator(iteratorName), keyAttrName);
     }
 
@@ -516,7 +509,7 @@ public class ADFUtils {
      * @param keyAttrName name of key attribute to use
      * @return List of Key objects for rows
      */
-    public static List<Key> keyAttrListForIterator(DCIteratorBinding iter, String keyAttrName) {
+    public List<Key> keyAttrListForIterator(DCIteratorBinding iter, String keyAttrName) {
         List<Key> attributeList = new ArrayList<Key>();
         for (Row r : iter.getAllRowsInRange()) {
             attributeList.add(new Key(new Object[] { r.getAttribute(keyAttrName) }));
@@ -528,7 +521,7 @@ public class ADFUtils {
      * @param name
      * @return
      */
-    public static JUCtrlValueBinding findCtrlBinding(String name) {
+    public JUCtrlValueBinding findCtrlBinding(String name) {
         JUCtrlValueBinding rowBinding = (JUCtrlValueBinding) getDCBindingContainer().findCtrlBinding(name);
         if (rowBinding == null) {
             throw new RuntimeException("CtrlBinding " + name + "' not found");
@@ -536,8 +529,7 @@ public class ADFUtils {
         return rowBinding;
     }
 
-   
-	
+
     /**
      * Get List of ADF Faces SelectItem for an iterator binding.
      *
@@ -547,7 +539,7 @@ public class ADFUtils {
      * @param displayAttrName name of the attribute from iterator rows to display
      * @return ADF Faces SelectItem for an iterator binding
      */
-    public static List<SelectItem> selectItemsByKeyForIterator(String iteratorName, String displayAttrName) {
+    public List<SelectItem> selectItemsByKeyForIterator(String iteratorName, String displayAttrName) {
         return selectItemsByKeyForIterator(IteratorUtils.findIterator(iteratorName), displayAttrName);
     }
 
@@ -561,9 +553,10 @@ public class ADFUtils {
      * @param descriptionAttrName name of the attribute for description
      * @return ADF Faces SelectItem for an iterator binding with discription
      */
-    public static List<SelectItem> selectItemsByKeyForIterator(String iteratorName, String displayAttrName,
-                                                               String descriptionAttrName) {
-        return selectItemsByKeyForIterator(IteratorUtils.findIterator(iteratorName), displayAttrName, descriptionAttrName);
+    public List<SelectItem> selectItemsByKeyForIterator(String iteratorName, String displayAttrName,
+                                                        String descriptionAttrName) {
+        return selectItemsByKeyForIterator(IteratorUtils.findIterator(iteratorName), displayAttrName,
+                                           descriptionAttrName);
     }
 
     /**
@@ -576,8 +569,8 @@ public class ADFUtils {
      * @param descriptionAttrName name of the attribute for description
      * @return ADF Faces SelectItem for an iterator binding with discription
      */
-    public static List<SelectItem> selectItemsByKeyForIterator(DCIteratorBinding iter, String displayAttrName,
-                                                               String descriptionAttrName) {
+    public List<SelectItem> selectItemsByKeyForIterator(DCIteratorBinding iter, String displayAttrName,
+                                                        String descriptionAttrName) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for (Row r : iter.getAllRowsInRange()) {
             selectItems.add(new SelectItem(r.getKey(), (String) r.getAttribute(displayAttrName),
@@ -595,7 +588,7 @@ public class ADFUtils {
      * @param displayAttrName name of the attribute from iterator rows to display
      * @return List of ADF Faces SelectItem for an iterator binding
      */
-    public static List<SelectItem> selectItemsByKeyForIterator(DCIteratorBinding iter, String displayAttrName) {
+    public List<SelectItem> selectItemsByKeyForIterator(DCIteratorBinding iter, String displayAttrName) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for (Row r : iter.getAllRowsInRange()) {
             selectItems.add(new SelectItem(r.getKey(), (String) r.getAttribute(displayAttrName)));
@@ -613,7 +606,7 @@ public class ADFUtils {
      * @param pageDefName name of the page defintion XML file to use
      * @return BindingContainer ref for the named definition
      */
-    private static BindingContainer findBindingContainer(String pageDefName) {
+    private BindingContainer findBindingContainer(String pageDefName) {
         BindingContext bctx = getDCBindingContainer().getBindingContext();
         BindingContainer foundContainer = bctx.findBindingContainer(pageDefName);
         return foundContainer;
@@ -649,32 +642,30 @@ public class ADFUtils {
         return true;
     }
 
-	/** function take popup id and will show this popup */
-  public static void showPopup(String popupName)
-  {
-    StringBuilder strb = new StringBuilder("AdfPage.PAGE.findComponentByAbsoluteId(\"" + popupName + "\").show();");
-    writeJavaScriptToClient(strb.toString());
-  }
+    /** function take popup id and will show this popup */
+    public static void showPopup(String popupName) {
+        StringBuilder strb = new StringBuilder("AdfPage.PAGE.findComponentByAbsoluteId(\"" + popupName + "\").show();");
+        writeJavaScriptToClient(strb.toString());
+    }
 
-/** function take popup id and component id and will show this popup behind with this component */
-  public static void showPopup(String popupName, String alignId)
-  {
-    StringBuilder strb = new StringBuilder("var pop = AdfPage.PAGE.findComponentByAbsoluteId(" + popupName + ");");
-    strb.append("var hints = {};\n");
-    strb.append("hints[AdfRichPopup.HINT_ALIGN_ID] = '" + alignId + "';");
-    strb.append("pop.show(hints);");
-    writeJavaScriptToClient(strb.toString());
-  }
-	
+    /** function take popup id and component id and will show this popup behind with this component */
+    public void showPopup(String popupName, String alignId) {
+        StringBuilder strb = new StringBuilder("var pop = AdfPage.PAGE.findComponentByAbsoluteId(" + popupName + ");");
+        strb.append("var hints = {};\n");
+        strb.append("hints[AdfRichPopup.HINT_ALIGN_ID] = '" + alignId + "';");
+        strb.append("pop.show(hints);");
+        writeJavaScriptToClient(strb.toString());
+    }
+
     /**
      * Displays a popup.
      *
      * @param popupId
      */
-    public static void showPopup12(@SuppressWarnings("oracle.jdeveloper.java.unused-parameter") String popupId) {
+    public void showPopup12(@SuppressWarnings("oracle.jdeveloper.java.unused-parameter") String popupId) {
     }
 
-    public static void showPopup1(String clientId) {
+    public void showPopup1(String clientId) {
         FacesContext ctx = FacesContext.getCurrentInstance();
         StringBuilder javaScriptPopup = new StringBuilder("var popObj=AdfPage.PAGE.findComponent('" + clientId + "');");
         javaScriptPopup.append("popObj.show();");
@@ -684,13 +675,13 @@ public class ADFUtils {
         ctx.renderResponse();
     }
 
-    public static void showPopup123(String popupId) {
+    public void showPopup123(String popupId) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService service = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
         service.addScript(facesContext, "AdfPage.PAGE.findComponentByAbsoluteId('generic:" + popupId + "').show();");
     }
 
-    public static void showPopup2(RichPopup popup) {
+    public void showPopup2(RichPopup popup) {
         FacesContext ctx = FacesContext.getCurrentInstance();
         String popupId = popup.getClientId(ctx);
         ExtendedRenderKitService erkService = Service.getService(ctx.getRenderKit(), ExtendedRenderKitService.class);
@@ -699,13 +690,13 @@ public class ADFUtils {
                              "').show(hints);");
     }
 
-    public static void showPopupJavaScript(String popupId) {
+    public void showPopupJavaScript(String popupId) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService service = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
         service.addScript(facesContext, "AdfPage.PAGE.findComponentByAbsoluteId('" + popupId + "').show();");
     }
 
-    public static void showPopupJavaScriptAdd() {
+    public void showPopupJavaScriptAdd() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService service = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
         service.addScript(facesContext,
@@ -715,7 +706,7 @@ public class ADFUtils {
     }
 
 
-    public static void hidePopupJavaScript(String popupId) {
+    public void hidePopupJavaScript(String popupId) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService service = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
         service.addScript(facesContext, "AdfPage.PAGE.findComponentByAbsoluteId('generic:" + popupId + "').hide();");
@@ -751,12 +742,12 @@ public class ADFUtils {
      *
      * @return true/false whether there are pending changes.
      */
-    public static boolean isTransactionDirty() {
+    public boolean isTransactionDirty() {
         // check for dirty transaction in both the model and the controller.
         return isBCTransactionDirty() || isControllerTransactionDirty();
     }
 
-    public static void expandSpilter(RichPanelSplitter splitter) {
+    public void expandSpilter(RichPanelSplitter splitter) {
         String clientId = splitter.getClientId(FacesContext.getCurrentInstance());
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService service = org.apache
@@ -773,7 +764,7 @@ public class ADFUtils {
         service.addScript(facesContext, script.toString());
     }
 
-    public static void collapseSplitter(RichPanelSplitter splitter) {
+    public void collapseSplitter(RichPanelSplitter splitter) {
         String clientId = splitter.getClientId(FacesContext.getCurrentInstance());
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService service = org.apache
@@ -790,7 +781,7 @@ public class ADFUtils {
         service.addScript(facesContext, script.toString());
     }
 
-    public static void closwBrowser() {
+    public void closwBrowser() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService erks = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
         StringBuilder sb = new StringBuilder("window.close();");
@@ -799,15 +790,13 @@ public class ADFUtils {
     }
 
 
-   
-
     /**
      * Get a List of attributes as a Map (of name, value) for an iterator.
      * @param iter iterator binding
      * @param attrNames array of attribute names for attributes to be retrieved
      * @return List of attribute values
      */
-    public static List<Map<String, Object>> attributesListForIterator(DCIteratorBinding iter, String[] attrNames) {
+    public List<Map<String, Object>> attributesListForIterator(DCIteratorBinding iter, String[] attrNames) {
         List<Map<String, Object>> attributeList = new ArrayList<Map<String, Object>>();
         for (Row r : iter.getAllRowsInRange()) {
             Map<String, Object> alist = new HashMap<String, Object>();
@@ -819,12 +808,12 @@ public class ADFUtils {
         return attributeList;
     }
 
-   
+
     /**
      * Get the page flow scope
      * @return
      */
-    public static Map getPageFlowScope() {
+    public Map getPageFlowScope() {
         return AdfFacesContext.getCurrentInstance().getPageFlowScope();
     }
 
@@ -837,8 +826,8 @@ public class ADFUtils {
      * @param openInWindow - true will open a browser window (if settings of the browser
      *     allow this), false will open a new browser tab.
      */
-    public static void launchTaskFlowInNewWindow(TaskFlowId taskFlowId, Map taskFlowParams, String windowName,
-                                                 boolean openInWindow) {
+    public void launchTaskFlowInNewWindow(TaskFlowId taskFlowId, Map taskFlowParams, String windowName,
+                                          boolean openInWindow) {
         launchTaskFlowInNewWindow(taskFlowId, taskFlowParams, windowName, openInWindow, 1000, 750);
 
     }
@@ -856,8 +845,8 @@ public class ADFUtils {
      * @param height
      */
 
-    public static void launchTaskFlowInNewWindow(TaskFlowId taskFlowId, Map taskFlowParams, String windowName,
-                                                 boolean openInWindow, int width, int height) {
+    public void launchTaskFlowInNewWindow(TaskFlowId taskFlowId, Map taskFlowParams, String windowName,
+                                          boolean openInWindow, int width, int height) {
 
         String url = ControllerContext.getInstance().getTaskFlowURL(false, taskFlowId, taskFlowParams);
 
@@ -913,7 +902,7 @@ public class ADFUtils {
         extendedRenderKitService.addScript(context, script.toString());
     }
 
-    public static void executeClientSideScript(String script) {
+    public void executeClientSideScript(String script) {
         FacesContext context = FacesContext.getCurrentInstance();
         ExtendedRenderKitService extendedRenderKitService =
             Service.getService(context.getRenderKit(), ExtendedRenderKitService.class);
@@ -929,7 +918,7 @@ public class ADFUtils {
      * @param panelTabbed
      * @return
      */
-    public static String getDisclosedDetailItemId(RichPanelTabbed panelTabbed) {
+    public String getDisclosedDetailItemId(RichPanelTabbed panelTabbed) {
         RichShowDetailItem item = getDisclosedDetailItem(panelTabbed);
         if (item != null) {
             return item.getId();
@@ -944,7 +933,7 @@ public class ADFUtils {
      * @param panelTabbed
      * @return
      */
-    public static RichShowDetailItem getDisclosedDetailItem(RichPanelTabbed panelTabbed) {
+    public RichShowDetailItem getDisclosedDetailItem(RichPanelTabbed panelTabbed) {
         if (panelTabbed != null) {
             Iterator iter = panelTabbed.getChildren().iterator();
             // Loop through all the child components
@@ -968,7 +957,7 @@ public class ADFUtils {
      * @param component UIComponent
      * @return true / false
      */
-    public static boolean isEmpty(UIComponent component) {
+    public boolean isEmpty(UIComponent component) {
         boolean isEmpty = false;
         if (component == null) {
             isEmpty = true;
@@ -992,7 +981,7 @@ public class ADFUtils {
      * @param table
      * @return
      */
-    public static List<Row> getSelectedRows(RichTable table) {
+    public List<Row> getSelectedRows(RichTable table) {
         List<Row> rows = new ArrayList<Row>();
 
         // get the selected row keys (iterator)
@@ -1008,7 +997,7 @@ public class ADFUtils {
         return rows;
     }
 
-    public static void printRow(Row row) {
+    public void printRow(Row row) {
         System.out.println("\nSTART " + row.getKey() + " *********************");
         for (int i = 0; i < row.getAttributeCount(); i++) {
             System.out.println("row[" + row.getAttributeNames()[i] + "]:[" + row.getAttribute(i) + "]");
@@ -1025,8 +1014,8 @@ public class ADFUtils {
      * @param valueAttrName attribut name for the value
      * @return Map of attribute values
      */
-    public static Map<Object, Object> attributesMapForIterator(DCIteratorBinding iter, String keyAttrName,
-                                                               String valueAttrName) {
+    public Map<Object, Object> attributesMapForIterator(DCIteratorBinding iter, String keyAttrName,
+                                                        String valueAttrName) {
         Map<Object, Object> amap = new HashMap<Object, Object>();
         for (Row r : iter.getAllRowsInRange()) {
             amap.put(r.getAttribute(keyAttrName), r.getAttribute(valueAttrName));
@@ -1041,8 +1030,7 @@ public class ADFUtils {
      * @param valueAttrName attribut name for the value
      * @return Map of attribute values
      */
-    public static Map<Object, Object> attributeMapForIterator(String iteratorName, String keyAttrName,
-                                                              String valueAttrName) {
+    public Map<Object, Object> attributeMapForIterator(String iteratorName, String keyAttrName, String valueAttrName) {
         return attributesMapForIterator(IteratorUtils.findIterator(iteratorName), keyAttrName, valueAttrName);
     }
 
@@ -1053,7 +1041,7 @@ public class ADFUtils {
      * @param el EL to evaluate
      * @return Result of the evaluation
      */
-    /*     public static Object evaluateEL(String el) {
+    /*     public  Object evaluateEL(String el) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ELContext elContext = facesContext.getELContext();
         ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
@@ -1079,7 +1067,7 @@ public class ADFUtils {
         return obj;
     }
 
-    public static String getLocaleValue(String el, String code) {
+    public String getLocaleValue(String el, String code) {
         Map map = (Map) evaluateEL(el);
         if (map != null) {
             if (map.get(code) != null)
@@ -1098,7 +1086,7 @@ public class ADFUtils {
      * @param el EL of the method to invoke
      * @return Object that the method returns
      */
-    public static Object invokeEL(String el) {
+    public Object invokeEL(String el) {
         return invokeEL(el, new Class[0], new Object[0]);
     }
 
@@ -1110,7 +1098,7 @@ public class ADFUtils {
      * @param params Array of Object defining the values of the parametrs
      * @return Object that the method returns
      */
-    public static Object invokeEL(String el, Class[] paramTypes, Object[] params) {
+    public Object invokeEL(String el, Class[] paramTypes, Object[] params) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ELContext elContext = facesContext.getELContext();
         ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
@@ -1119,7 +1107,7 @@ public class ADFUtils {
         return exp.invoke(elContext, params);
     }
 
-    public static Object invokeEL(String el, Class paramType, Object param) {
+    public Object invokeEL(String el, Class paramType, Object param) {
         return invokeEL(el, new Class[] { paramType }, new Object[] { param });
     }
 
@@ -1134,7 +1122,7 @@ public class ADFUtils {
      * @return Object that the method returns
      */
 
-    /*    public static Object invokeEL(String el, Class[] paramTypes, Object[] params) {
+    /*    public  Object invokeEL(String el, Class[] paramTypes, Object[] params) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ELContext elContext = facesContext.getELContext();
         ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
@@ -1155,7 +1143,7 @@ public class ADFUtils {
      * @param el EL object to assign a value
      * @param val Value to assign
      */
-    public static void setEL(String el, Object val) {
+    public void setEL(String el, Object val) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ELContext elContext = facesContext.getELContext();
         ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
@@ -1164,7 +1152,7 @@ public class ADFUtils {
     }
 
 
-    public static String errorDialog(String errorMessage) {
+    public String errorDialog(String errorMessage) {
         FacesContext context = FacesContext.getCurrentInstance();
         ((HttpSession) context.getExternalContext().getSession(false)).setAttribute("errorMessage", errorMessage);
         ViewHandler viewHandler = context.getApplication().getViewHandler();
@@ -1186,7 +1174,7 @@ public class ADFUtils {
      * @param region - RichRegion that represents taskflow.
      * @param outComeEl - action outcome, based on whic control flows
      */
-    public static void performControlFlow(RichRegion region, String outComeEl) {
+    public void performControlFlow(RichRegion region, String outComeEl) {
         FacesContext ctx = FacesContext.getCurrentInstance();
         ExpressionFactory f = ctx.getApplication().getExpressionFactory();
         ELContext elctx = ctx.getELContext();
@@ -1194,13 +1182,13 @@ public class ADFUtils {
         region.queueActionEventInRegion(m, null, null, false, -1, -1, PhaseId.ANY_PHASE);
     }
 
-    public static HttpServletRequest getHttpServletRequest() {
+    public HttpServletRequest getHttpServletRequest() {
         return ((HttpServletRequest) FacesContext.getCurrentInstance()
                                                  .getExternalContext()
                                                  .getRequest());
     }
 
-    public static HttpSession getHttpSession() {
+    public HttpSession getHttpSession() {
         return ((HttpSession) FacesContext.getCurrentInstance()
                                           .getExternalContext()
                                           .getSession(false));
@@ -1212,20 +1200,20 @@ public class ADFUtils {
      * @param controlName data control name as given in data bindings file
      * @return
      */
-    public static DCDataControl findDataControl(String controlName) {
+    public DCDataControl findDataControl(String controlName) {
         DCBindingContainer context = (DCBindingContainer) ADFUtils.evaluateEL("#{bindings}");
         DCDataControl dcf = context.findDataControl(controlName);
         return dcf;
     }
 
 
-    public static void addFacesMessage(String id, FacesMessage message) {
+    public void addFacesMessage(String id, FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(id, message);
         FacesContext.getCurrentInstance().renderResponse();
     }
 
-    public static void addFacesMessage(String clientId, javax.faces.application.FacesMessage.Severity severity,
-                                       String localizedText) {
+    public void addFacesMessage(String clientId, javax.faces.application.FacesMessage.Severity severity,
+                                String localizedText) {
         FacesContext.getCurrentInstance().addMessage(clientId, new FacesMessage(severity, "", localizedText));
         FacesContext.getCurrentInstance().renderResponse();
     }
@@ -1237,7 +1225,7 @@ public class ADFUtils {
     }
 
 
-    public static String showError(String clientId, String errorMessage) {
+    public String showError(String clientId, String errorMessage) {
 
         FacesContext ctx = FacesContext.getCurrentInstance();
         StringBuilder javaScriptPopup = new StringBuilder("var popObj=AdfPage.PAGE.findComponent('" + clientId + "');");
@@ -1253,25 +1241,24 @@ public class ADFUtils {
         return "";
     }
 
-    public static void addPartialTarget(UIComponent attribute) {
+    public void addPartialTarget(UIComponent attribute) {
         AdfFacesContext.getCurrentInstance().addPartialTarget(attribute);
     }
 
 
-    public static void setFacesMessage(String title, String message) {
+    public void setFacesMessage(String title, String message) {
         FacesContext context = FacesContext.getCurrentInstance();
         FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, title, message);
         context.addMessage(null, fm);
     }
 
 
-
-    public static void renderResponse() {
+    public void renderResponse() {
         FacesContext.getCurrentInstance().renderResponse();
     }
 
 
-    public static void refreshWholePage() {
+    public void refreshWholePage() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         String refreshpage = facesContext.getViewRoot().getViewId();
         ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
@@ -1284,7 +1271,7 @@ public class ADFUtils {
     /**
      * Constant for signalling failed SRService checkout during eager test.
      */
-    public static final String SRSERVICE_CHECKOUT_FAILED = "SRServiceFailed";
+    public final String SRSERVICE_CHECKOUT_FAILED = "SRServiceFailed";
 
 
     //Setter and getter for session parameters
@@ -1309,342 +1296,271 @@ public class ADFUtils {
      * Method to check if the request is AJAX/PPR
      *
      */
-    public static boolean isPprRequest() {
+    public boolean isPprRequest() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return AdfFacesContext.getCurrentInstance().isPartialRequest(facesContext);
     }
-	
-	/** function return the current jsp name */
-  public String getPageName()
-  {
-    FacesContext context = IteratorUtils.getFacesContext();
-    String viewId = context.getViewRoot().getViewId();
-    int dotIndex = viewId.indexOf(".");
-    if (dotIndex < 0)
-    {
-      return viewId;
-    }
-    String fileName = viewId.substring(1, dotIndex);
-    return fileName;
-  }
 
-/** function used to refresh the hole jsp page */
-  public static void refreshPage()
-  {
-    FacesContext context = FacesContext.getCurrentInstance();
-    String currentView = context.getViewRoot().getViewId();
-    ViewHandler vh = context.getApplication().getViewHandler();
-    UIViewRoot UIV = vh.createView(context, currentView);
-    UIV.setViewId(currentView);
-    context.setViewRoot(UIV);
-  }
-
-/** function take outcome and will navigate to the page */
-  public static void navigateToPage(String outcome)
-  {
-    FacesContext fc = FacesContext.getCurrentInstance();
-    fc.getApplication().getNavigationHandler().handleNavigation(fc, null, outcome);
-  }
-
-/** function For Cancelling any Changes Happened In The Row (Create New Row or Update Row) */
-  public void cancelChangesInCurrentRow(String iteratorName) 
-  {
-    DCIteratorBinding iterBinding = IteratorUtils.getIterator(iteratorName);
-    ViewObject vo = iterBinding.getViewObject();
-    Row currentRow = vo.getCurrentRow();
-    currentRow.refresh(Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES);
-  }
-	
-	
-	  
-/** function used for uploading file */
-  public static void uploadFile(ValueChangeEvent valueChangeEvent, String fileLocation, String fileName)
-  {
-    UploadedFile file = (UploadedFile) valueChangeEvent.getNewValue();
-    if (fileLocation == null)
-    {
-      fileLocation = "c:/";
-    }
-    InputStream in;
-    FileOutputStream out;
-    boolean exists = (new File(fileLocation)).exists();
-    if (!exists)
-    {
-      (new File(fileLocation)).mkdirs();
-    }
-    if (file != null && file.getLength() > 0)
-    {
-      FacesContext context = FacesContext.getCurrentInstance();
-      FacesMessage message = new FacesMessage("File Uploaded  " + file.getFilename() + " (" + file.getLength() + " bytes)");
-      context.addMessage(valueChangeEvent.getComponent().getClientId(context), message);
-      try
-      {
-        out = new FileOutputStream(fileLocation + "" + fileName);
-        in = file.getInputStream();
-        for (int bytes = 0; bytes < file.getLength(); bytes++)
-        {
-          out.write(in.read());
+    /** function return the current jsp name */
+    public String getPageName() {
+        FacesContext context = IteratorUtils.getFacesContext();
+        String viewId = context.getViewRoot().getViewId();
+        int dotIndex = viewId.indexOf(".");
+        if (dotIndex < 0) {
+            return viewId;
         }
-        in.close();
-        out.close();
-      }
-      catch (IOException e)
-      {
-        e.printStackTrace();
-      }
+        String fileName = viewId.substring(1, dotIndex);
+        return fileName;
     }
-    else
-    {
-      String filename = file != null? file.getFilename(): null;
-      String byteLength = file != null? "" + file.getLength(): "0";
-      FacesContext context = FacesContext.getCurrentInstance();
-      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, " " + " " + filename + " (" + byteLength + " bytes)", null);
-      context.addMessage(valueChangeEvent.getComponent().getClientId(context), message);
-    }
-  }
 
-/** function used for downloading file */
-  public static void downloadFile(java.io.OutputStream outputStream, String fileName) throws IOException
-  {
-    try
-    {
-      File file = new File(fileName);
-      byte[] b = new byte[(int) file.length()];
-      FileInputStream fileInputStream = new FileInputStream(file);
-      fileInputStream.read(b);
-      outputStream.write(b);
-      outputStream.flush();
+    /** function used to refresh the hole jsp page */
+    public void refreshPage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String currentView = context.getViewRoot().getViewId();
+        ViewHandler vh = context.getApplication().getViewHandler();
+        UIViewRoot UIV = vh.createView(context, currentView);
+        UIV.setViewId(currentView);
+        context.setViewRoot(UIV);
     }
-    catch (Exception e)
-    {
-      FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null);
-      fm.setDetail("No file found");
-      FacesContext.getCurrentInstance().addMessage(null, fm);
-    }
-  }
 
-/** function take database sequence name and return the next value for this sequence */  
-  public static BigDecimal getSequenceNextValue(String sequenceName)
-  {
-    SequenceImpl seq = new SequenceImpl(sequenceName, IteratorUtils.getDefaultDBTransaction());
-    return new BigDecimal(seq.getSequenceNumber().toString());
-  }
-  
-  
-	
-/** function take dml sql statement and execute this statement then return number of records affects during the execution */
-  public static int executeDML(String sql)
-  {
-    PreparedStatement stat = null;
-    try
-    {
-      stat = IteratorUtils.getDefaultDBTransaction().createPreparedStatement(sql, 1);
-      int result = stat.executeUpdate();
-      return result;
+    /** function take outcome and will navigate to the page */
+    public void navigateToPage(String outcome) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getApplication()
+          .getNavigationHandler()
+          .handleNavigation(fc, null, outcome);
     }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-    }
-    finally
-    {
-      DBUtils.close(stat);
-    }
-    return 0;
-  }
 
-  
-  
-/** function take the folder name (which is located inside Web Content folder) and will return the real path of that folder */   
-  public String getContextRealPath(String folderName)
-  {
-    String path = "";
-    try
-    {
-      path = getContext().getRealPath("/" + folderName);
+    /** function For Cancelling any Changes Happened In The Row (Create New Row or Update Row) */
+    public void cancelChangesInCurrentRow(String iteratorName) {
+        DCIteratorBinding iterBinding = IteratorUtils.getIterator(iteratorName);
+        ViewObject vo = iterBinding.getViewObject();
+        Row currentRow = vo.getCurrentRow();
+        currentRow.refresh(Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES);
     }
-    catch (Exception e)
-    {
-      System.out.println(e);
-    }
-    return path;
-  }
-
-  
-  
-/** function take af:table component (RichTable object) and clear all columns filters */
-  public static void clearTableFilters(RichTable tableComponent)
-  {
-    FilterableQueryDescriptor q = (FilterableQueryDescriptor) tableComponent.getFilterModel();
-    Map<String, Object> m = q.getFilterCriteria();
-    if (m != null)
-    {
-      m.clear();
-    }
-  }
-
-/** function take af:query component (RichQuery object) and reset query fields  */  
-  public static void resetQueryFields(RichQuery queryComponent)
-  {
-    QueryModel queryModel = queryComponent.getModel(); 
-    QueryDescriptor queryDescriptor = queryComponent.getValue(); 
-    queryModel.reset(queryDescriptor);
-  }
 
 
-/** function take componentId and set focus of this component  */  
-  public static void setFocus(String componentId) 
-  {
-    FacesContext facesContext = FacesContext.getCurrentInstance();
-    ExtendedRenderKitService service = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
-    service.addScript(facesContext, "comp = AdfPage.PAGE.findComponent('"+componentId+"'); comp.focus();");
-  }
-
-
-
-  public static void createNewFile(String filePath)
-  {
-    Writer writer = null;
-    try
-    {
-      writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), "utf-8"));
-    }
-    catch (IOException ex)
-    {
-    }
-    finally
-    {
-      try
-      {
-        writer.close();
-      }
-      catch (Exception ex)
-      {
-      }
-    }
-  }
-  
-  
-  
-  
-  public static void editPropertyFile(String filePath, String key, String value)
-  {
-    try
-    {
-      FileInputStream in = new FileInputStream(filePath);
-      Properties props = new Properties();
-      props.load(in);
-      in.close();
-
-      FileOutputStream out = new FileOutputStream(filePath);
-      props.setProperty(key, value);
-      props.store(out, null);
-      out.close();
-    }
-    catch (Exception e)
-    {
-    }
-  }
-  
-  
-  
-  public static String readValueFromPropertyFile(String filePath, String key)
-  {
-    Properties prop = new Properties();
-    InputStream input = null;
-    try
-    {
-      input = new FileInputStream(filePath);
-      prop.load(input);
-      String value = prop.getProperty(key);
-      return value;
-    }
-    catch (Exception e)
-    {
-    }
-    finally
-    {
-      if (input != null)
-      {
-        try
-        {
-          input.close();
+    /** function used for uploading file */
+    public void uploadFile(ValueChangeEvent valueChangeEvent, String fileLocation, String fileName) {
+        UploadedFile file = (UploadedFile) valueChangeEvent.getNewValue();
+        if (fileLocation == null) {
+            fileLocation = "c:/";
         }
-        catch (IOException e)
-        {
+        InputStream in;
+        FileOutputStream out;
+        boolean exists = (new File(fileLocation)).exists();
+        if (!exists) {
+            (new File(fileLocation)).mkdirs();
         }
-      }
-    }
-    return null;
-  }
-  
-  
-  
-   public static String getClientComputerName()
-  {
-    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    return request.getRemoteHost().split("\\.")[0];
-  }
-   
-   
-   
-  
-  public static void addCookie(String cookieName, String cookieValue)
-  {
-    FacesContext context = FacesContext.getCurrentInstance();
-    HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse();
-
-    Cookie cookie = new Cookie(cookieName, cookieValue);
-    cookie.setMaxAge(60*60*24*365*5);
-    response.addCookie(cookie);
-  }
-
-  public static void removeCookie(String cookieName)
-  {
-    FacesContext context = FacesContext.getCurrentInstance();
-    HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
-    HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse();
-    Cookie[] cookies = request.getCookies();
-
-    if (cookies != null)
-    {
-      for (int i = 0; i < cookies.length; i++)
-      {
-        String name = cookies[i].getName();
-
-        if ((name == null) || (!name.equals(cookieName)))
-          continue;
-        cookies[i].setMaxAge(0);
-        response.addCookie(cookies[i]);
-        break;
-      }
-    }
-  }
-
-  public static String getCookieValue(String cookieName)
-  {
-    FacesContext context = FacesContext.getCurrentInstance();
-    HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
-    Cookie[] cookies = request.getCookies();
-
-    if (cookies != null)
-    {
-      for (int i = 0; i < cookies.length; i++)
-      {
-        String name = cookies[i].getName();
-        String value = cookies[i].getValue();
-        int age = cookies[i].getMaxAge();
-
-        if ((name != null) && (name.equals(cookieName)) && (age != 0))
-        {
-          return value;
+        if (file != null && file.getLength() > 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            FacesMessage message =
+                new FacesMessage("File Uploaded  " + file.getFilename() + " (" + file.getLength() + " bytes)");
+            context.addMessage(valueChangeEvent.getComponent().getClientId(context), message);
+            try {
+                out = new FileOutputStream(fileLocation + "" + fileName);
+                in = file.getInputStream();
+                for (int bytes = 0; bytes < file.getLength(); bytes++) {
+                    out.write(in.read());
+                }
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            String filename = file != null ? file.getFilename() : null;
+            String byteLength = file != null ? "" + file.getLength() : "0";
+            FacesContext context = FacesContext.getCurrentInstance();
+            FacesMessage message =
+                new FacesMessage(FacesMessage.SEVERITY_WARN, " " + " " + filename + " (" + byteLength + " bytes)",
+                                 null);
+            context.addMessage(valueChangeEvent.getComponent().getClientId(context), message);
         }
-      }
     }
-    return null;
-  }
-  
-    
+
+    /** function used for downloading file */
+    public void downloadFile(java.io.OutputStream outputStream, String fileName) throws IOException {
+        try {
+            File file = new File(fileName);
+            byte[] b = new byte[(int) file.length()];
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(b);
+            outputStream.write(b);
+            outputStream.flush();
+        } catch (Exception e) {
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null);
+            fm.setDetail("No file found");
+            FacesContext.getCurrentInstance().addMessage(null, fm);
+        }
+    }
+
+    /** function take database sequence name and return the next value for this sequence */
+    public BigDecimal getSequenceNextValue(String sequenceName) {
+        SequenceImpl seq = new SequenceImpl(sequenceName, IteratorUtils.getDefaultDBTransaction());
+        return new BigDecimal(seq.getSequenceNumber().toString());
+    }
+
+
+    /** function take dml sql statement and execute this statement then return number of records affects during the execution */
+    public int executeDML(String sql) {
+        PreparedStatement stat = null;
+        try {
+            stat = IteratorUtils.getDefaultDBTransaction().createPreparedStatement(sql, 1);
+            int result = stat.executeUpdate();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtils.close(stat);
+        }
+        return 0;
+    }
+
+
+    /** function take the folder name (which is located inside Web Content folder) and will return the real path of that folder */
+    public String getContextRealPath(String folderName) {
+        String path = "";
+        try {
+            path = getContext().getRealPath("/" + folderName);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return path;
+    }
+
+
+    /** function take af:table component (RichTable object) and clear all columns filters */
+    public void clearTableFilters(RichTable tableComponent) {
+        FilterableQueryDescriptor q = (FilterableQueryDescriptor) tableComponent.getFilterModel();
+        Map<String, Object> m = q.getFilterCriteria();
+        if (m != null) {
+            m.clear();
+        }
+    }
+
+    /** function take af:query component (RichQuery object) and reset query fields  */
+    public void resetQueryFields(RichQuery queryComponent) {
+        QueryModel queryModel = queryComponent.getModel();
+        QueryDescriptor queryDescriptor = queryComponent.getValue();
+        queryModel.reset(queryDescriptor);
+    }
+
+
+    /** function take componentId and set focus of this component  */
+    public void setFocus(String componentId) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExtendedRenderKitService service = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
+        service.addScript(facesContext, "comp = AdfPage.PAGE.findComponent('" + componentId + "'); comp.focus();");
+    }
+
+
+    public void createNewFile(String filePath) {
+        Writer writer = null;
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), "utf-8"));
+        } catch (IOException ex) {
+        } finally {
+            try {
+                writer.close();
+            } catch (Exception ex) {
+            }
+        }
+    }
+
+
+    public void editPropertyFile(String filePath, String key, String value) {
+        try {
+            FileInputStream in = new FileInputStream(filePath);
+            Properties props = new Properties();
+            props.load(in);
+            in.close();
+
+            FileOutputStream out = new FileOutputStream(filePath);
+            props.setProperty(key, value);
+            props.store(out, null);
+            out.close();
+        } catch (Exception e) {
+        }
+    }
+
+
+    public String readValueFromPropertyFile(String filePath, String key) {
+        Properties prop = new Properties();
+        InputStream input = null;
+        try {
+            input = new FileInputStream(filePath);
+            prop.load(input);
+            String value = prop.getProperty(key);
+            return value;
+        } catch (Exception e) {
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public String getClientComputerName() {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance()
+                                                                      .getExternalContext()
+                                                                      .getRequest();
+        return request.getRemoteHost().split("\\.")[0];
+    }
+
+
+    public void addCookie(String cookieName, String cookieValue) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+
+        Cookie cookie = new Cookie(cookieName, cookieValue);
+        cookie.setMaxAge(60 * 60 * 24 * 365 * 5);
+        response.addCookie(cookie);
+    }
+
+    public void removeCookie(String cookieName) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                String name = cookies[i].getName();
+
+                if ((name == null) || (!name.equals(cookieName)))
+                    continue;
+                cookies[i].setMaxAge(0);
+                response.addCookie(cookies[i]);
+                break;
+            }
+        }
+    }
+
+    public String getCookieValue(String cookieName) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                String name = cookies[i].getName();
+                String value = cookies[i].getValue();
+                int age = cookies[i].getMaxAge();
+
+                if ((name != null) && (name.equals(cookieName)) && (age != 0)) {
+                    return value;
+                }
+            }
+        }
+        return null;
+    }
+
 
     public void ValidateItem(UIComponent MyComponent, FacesContext MyContext, String Header, String Footer, int Level) { // Force Validation
         FacesMessage MyMessage = new FacesMessage();
@@ -1690,8 +1606,7 @@ public class ADFUtils {
         Pop.show(hints);
     }
 
-   
-    
+
     public Boolean CheckUserNamePassword(String User, String Password, String IPAddress, String Port,
                                          String InstanceName) {
         Boolean FinalResult = false;
@@ -1736,22 +1651,13 @@ public class ADFUtils {
     }
 
 
-
-
-    public static String RPad(String str, Integer length, char car) {
+    public String RPad(String str, Integer length, char car) {
         return str + String.format("%" + (length - str.length()) + "s", "").replace(" ", String.valueOf(car));
     }
 
-    public static String LPad(String str, Integer length, char car) {
+    public String LPad(String str, Integer length, char car) {
         return String.format("%" + (length - str.length()) + "s", "").replace(" ", String.valueOf(car)) + str;
     }
 
- 
 
-
-   
-    
-
- 
-    
 }

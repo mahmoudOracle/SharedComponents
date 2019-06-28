@@ -47,15 +47,7 @@ import org.apache.myfaces.trinidad.context.RequestContext;
 
 public class WABEAN {
 
-    public String ExecuteMethod(String MethodName) { // Execute Method
-        OperationBinding operationBinding = this.AccessOperation(MethodName);
-        Object result = operationBinding.execute();
-        if (!operationBinding.getErrors().isEmpty()) {
-            return null;
-        }
-        return null;
-    }
-
+    
     public void ValidateItem(UIComponent MyComponent, FacesContext MyContext, String Header, String Footer, int Level) { // Force Validation
         FacesMessage MyMessage = new FacesMessage();
         if (Level == 1) {
@@ -148,10 +140,6 @@ public class WABEAN {
 
     public DCIteratorBinding AccessIteratorBinding(String IteratorName) { // Access IteratorBinding
         return (DCIteratorBinding) getBindings().get(IteratorName);
-    }
-
-    public OperationBinding AccessOperation(String OperationName) { // Access OperationBinding
-        return (OperationBinding) getBindings().getOperationBinding(OperationName);
     }
 
     public Map GetParameters(String MyOperation) { // Access Map
@@ -253,11 +241,11 @@ public class WABEAN {
         return AM.getTransaction().isDirty();
     }
 
-    public static Object invokeMethodExpression(String expr, Class returnType, Class argType, Object argument) {
+    public  Object invokeMethodExpression(String expr, Class returnType, Class argType, Object argument) {
         return invokeMethodExpression(expr, returnType, new Class[] { argType }, new Object[] { argument });
     }
 
-    public static Object invokeMethodExpression(String expr, Class returnType, Class[] argTypes, Object[] args) {
+    public  Object invokeMethodExpression(String expr, Class returnType, Class[] argTypes, Object[] args) {
         FacesContext fc = FacesContext.getCurrentInstance();
         ELContext elctx = fc.getELContext();
         ExpressionFactory elFactory = fc.getApplication().getExpressionFactory();
@@ -266,11 +254,11 @@ public class WABEAN {
     }
 
 
-    public static String RPad(String str, Integer length, char car) {
+    public  String RPad(String str, Integer length, char car) {
         return str + String.format("%" + (length - str.length()) + "s", "").replace(" ", String.valueOf(car));
     }
 
-    public static String LPad(String str, Integer length, char car) {
+    public  String LPad(String str, Integer length, char car) {
         return String.format("%" + (length - str.length()) + "s", "").replace(" ", String.valueOf(car)) + str;
     }
 

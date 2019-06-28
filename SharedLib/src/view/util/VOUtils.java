@@ -52,11 +52,11 @@ public class VOUtils {
 
     // Print
 
-    public static void printViewObjectInfo(String voName) {
+    public  void printViewObjectInfo(String voName) {
         printViewObjectInfo(getViewObjectByName(voName));
     }
 
-    public static void printViewObjectInfo(ViewObject vo) {
+    public  void printViewObjectInfo(ViewObject vo) {
         VOUtilsImpl.printViewObjectInfo(vo);
     }
 
@@ -69,7 +69,7 @@ public class VOUtils {
     }
 
     /** function take the name of the view object and return this view object */
-    public static ViewObject getViewObjectByName1(String viewObjectName) {
+    public  ViewObject getViewObjectByName1(String viewObjectName) {
         return IteratorUtils.getDefaultApplicationModule().findViewObject(viewObjectName);
     }
 
@@ -79,25 +79,25 @@ public class VOUtils {
     ///////////////////////////////////////////////
 
 
-    public static void printViewCriteriaNames(String voName) {
+    public  void printViewCriteriaNames(String voName) {
         printViewCriteriaNames(getViewObjectByName(voName));
     }
 
-    public static void printViewCriteriaNames(ViewObject vo) {
+    public  void printViewCriteriaNames(ViewObject vo) {
         VCUtilsImpl.printViewCriteriaNames(vo);
     }
 
-    public static void printApplyViewCriteriaNames(String voName) {
+    public  void printApplyViewCriteriaNames(String voName) {
         printApplyViewCriteriaNames(getViewObjectByName(voName));
     }
 
-    public static void printApplyViewCriteriaNames(ViewObject vo) {
+    public  void printApplyViewCriteriaNames(ViewObject vo) {
         VCUtilsImpl.printApplyViewCriteriaNames(vo);
     }
 
 
     /** function take view object name and delete all rows in this viewobject */
-    public static void clearViewObject(String viewObjectName) {
+    public  void clearViewObject(String viewObjectName) {
         ViewObject vo = IteratorUtils.getDefaultApplicationModule().findViewObject(viewObjectName);
         vo.executeQuery();
         while (vo.hasNext()) {
@@ -112,7 +112,7 @@ public class VOUtils {
     }
 
 
-    private static Object invokeMethod(String expr, Class returnType, Class[] argTypes, Object[] args) {
+    private  Object invokeMethod(String expr, Class returnType, Class[] argTypes, Object[] args) {
         FacesContext fc = FacesContext.getCurrentInstance();
         ELContext elctx = fc.getELContext();
         ExpressionFactory elFactory = fc.getApplication().getExpressionFactory();
@@ -127,7 +127,7 @@ public class VOUtils {
     }
 
     /** function can be called when the developer override table selectionListener and want to make the selected row is the current row (e.g makeTableSelectedRowCurrentRow("#{bindings.UsersView1.treeModel.makeCurrent}", selectionEvent)) */
-    public static void makeTableSelectedRowCurrentRow(String exp, SelectionEvent selectionEvent) {
+    public  void makeTableSelectedRowCurrentRow(String exp, SelectionEvent selectionEvent) {
         invokeMethod(exp, null, new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
     }
 
@@ -148,35 +148,35 @@ public class VOUtils {
 
     //    // GET
     //
-    //    public static ViewCriteria getViewCriteriaByName(ViewObject vo, String vcName) {
+    //    public  ViewCriteria getViewCriteriaByName(ViewObject vo, String vcName) {
     //    }
     //
     //    // ADD
     //
-    //    public static void addViewCriteria(ViewObject vo, String vcName) {
+    //    public  void addViewCriteria(ViewObject vo, String vcName) {
     //    }
     //
     //
     //    // Clear
     //
-    //    public static void clearViewCriteriaByName(String voName, String viewCriteriaForDeletion) {
+    //    public  void clearViewCriteriaByName(String voName, String viewCriteriaForDeletion) {
     //    }
     //
-    //    public static void clearViewCriteriaByName(ViewObject vo, String viewCriteriaForDeletion) {
-    //    }
-    //
-    //
-    //    public static void clearViewCriteriaByNameAndExecuteViewObject(ViewObject vo, String viewCriteriaForDeletion) {
-    //    }
-    //
-    //    public static void clearViewCriteriaByNameAndExecuteViewObject(String viewObjectName, String viewCriteriaForDeletion) {
+    //    public  void clearViewCriteriaByName(ViewObject vo, String viewCriteriaForDeletion) {
     //    }
     //
     //
-    //    public static void clearCutternViewCriterias(ViewObject vo) {
+    //    public  void clearViewCriteriaByNameAndExecuteViewObject(ViewObject vo, String viewCriteriaForDeletion) {
     //    }
     //
-    //    public static void clearCutternViewCriteriasAndExecuteViewObject (ViewObject vo) {
+    //    public  void clearViewCriteriaByNameAndExecuteViewObject(String viewObjectName, String viewCriteriaForDeletion) {
+    //    }
+    //
+    //
+    //    public  void clearCutternViewCriterias(ViewObject vo) {
+    //    }
+    //
+    //    public  void clearCutternViewCriteriasAndExecuteViewObject (ViewObject vo) {
     //    }
     //
     //
@@ -184,17 +184,17 @@ public class VOUtils {
     //    // Where Clauses
     //    ///////////////////////////////////////////////
     //
-    //    public static void printWhereClause (ViewObject vo) {
+    //    public  void printWhereClause (ViewObject vo) {
     //    }
     //
     //
-    //    public static void applyWhereClauseToViewObjectAndExecuteViewObject (ViewObject vo, String WhereClause) {
+    //    public  void applyWhereClauseToViewObjectAndExecuteViewObject (ViewObject vo, String WhereClause) {
     //    }
     //
-    //    public static void clearWhereClauseToViewObject (ViewObject vo) {
+    //    public  void clearWhereClauseToViewObject (ViewObject vo) {
     //    }
     //
-    //    public static void clearWhereClauseToViewObjectAndExecuteViewObject (ViewObject vo) {
+    //    public  void clearWhereClauseToViewObjectAndExecuteViewObject (ViewObject vo) {
     //    }
 
 

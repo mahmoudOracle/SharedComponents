@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 public class SessionUtils {
 
-    public static void printSessionVars(){
+    public  void printSessionVars(){
 
         System.out.println("SESSION VARS");
 
@@ -39,21 +39,21 @@ public class SessionUtils {
 
     // Write Attribute to session
 
-    public static void setStringAttributeToSession(String attrName, String attrValue){
+    public  void setStringAttributeToSession(String attrName, String attrValue){
         SessionUtils.getSession().setAttribute(attrName, attrValue);
     }
 
-    public static String getStringAttributeFromSession(String attrName){
+    public  String getStringAttributeFromSession(String attrName){
         return (String) SessionUtils.getSession().getAttribute(attrName);
     }
 
     // Write Object to Session
 
-    public static void writeObjectToSession(String objName, Object obj) {
+    public  void writeObjectToSession(String objName, Object obj) {
         SessionUtils.getSession().setAttribute(objName, obj);
     }
 
-    public static Object getObjectFromSession(String objName) {
+    public  Object getObjectFromSession(String objName) {
         Object res = null;
         if(SessionUtils.getSession() != null)
           res = SessionUtils.getSession().getAttribute(objName);
@@ -76,7 +76,7 @@ public class SessionUtils {
 
     /////////////////////////////////////////////
 
-    public static void invalidate(){
+    public  void invalidate(){
         System.out.println("INVALIDATE SESSION");
         getSession().invalidate();
         System.out.println("INVALIDATE SESSION");

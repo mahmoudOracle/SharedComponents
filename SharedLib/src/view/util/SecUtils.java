@@ -4,19 +4,19 @@ import oracle.adf.share.ADFContext;
 
 public class SecUtils {
     
-    public static Boolean IsSecurityTurnedOn(){
+    public  Boolean IsSecurityTurnedOn(){
         return ADFContext.getCurrent().getSecurityContext().isAuthorizationEnabled();
     }
     
-    public static Boolean IsAuthenticated(){
+    public  Boolean IsAuthenticated(){
         return ADFContext.getCurrent().getSecurityContext().isAuthenticated();
     }
     
-    public static String getCurrentUser(){
+    public  String getCurrentUser(){
         return ADFContext.getCurrent().getSecurityContext().getUserName();
     }
     
-    public static Boolean isUserInRole(String role){
+    public  Boolean isUserInRole(String role){
         return ADFContext.getCurrent().getSecurityContext().isUserInRole(role);
     }  
     

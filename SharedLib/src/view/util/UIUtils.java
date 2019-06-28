@@ -38,32 +38,32 @@ public class UIUtils {
     // PRINT UIComponent INFO
     // --------------------------------------------------------------
     public AttributeBinding AccessAttribute(String AttributeName) { // Access AttributeBinding
-        return (AttributeBinding) IteratorUtils.getBindings().get(AttributeName);
+        return (AttributeBinding)IteratorUtils.getBindings().get(AttributeName);
     }
     
     
-    public static void printUIComponentInfo(ValueChangeEvent valueChangeEvent) {
+    public  void printUIComponentInfo(ValueChangeEvent valueChangeEvent) {
         UIComponent uic = valueChangeEvent.getComponent();
         UIUtilsPrintImpl.printUIComponentInfo(uic);
     }
     
-    public static void printUIComponentInfo(ActionEvent actionEvent) {
+    public  void printUIComponentInfo(ActionEvent actionEvent) {
         UIComponent uic =  actionEvent.getComponent();
         UIUtilsPrintImpl.printUIComponentInfo(uic);
     }
     
-    public static void printUIComponentInfo(DisclosureEvent disclosureEvent) {
+    public  void printUIComponentInfo(DisclosureEvent disclosureEvent) {
         UIComponent uic =  disclosureEvent.getComponent();
         UIUtilsPrintImpl.printUIComponentInfo(uic);
     }
 
-    public static void printUIComponentInfo(String uicID) {
+    public void printUIComponentInfo(String uicID) {
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@");
         System.out.println("@@ Stirng UIC ID " + uicID);
-        UIUtilsPrintImpl.printUIComponentInfo(UIUtils.getUIComponentByAbsoluteID(uicID));
+        UIUtilsPrintImpl.printUIComponentInfo(getUIComponentByAbsoluteID(uicID));
     }
     
-    public static void printUIComponentInfo(UIComponent uic) {
+    public  void printUIComponentInfo(UIComponent uic) {
         UIUtilsPrintImpl.printUIComponentInfo(uic);
     }
 
@@ -71,11 +71,11 @@ public class UIUtils {
     // UPDATE UIComponent
     // --------------------------------------------------------------
     
-    public static void updateUIComponentByAbsoluteID(String uuid){
+    public  void updateUIComponentByAbsoluteID(String uuid){
         UIUtilsUpdateImpl.updateUIByUUID(uuid);
     }
     
-    public static void updateUIComponent(UIComponent uic){
+    public  void updateUIComponent(UIComponent uic){
         UIUtilsUpdateImpl.updateUIByUUID(uic);
     }
     
@@ -83,22 +83,22 @@ public class UIUtils {
     // GET UIComponent
     // --------------------------------------------------------------
     
-    public static UIComponent getUIComponent(ValueChangeEvent valueChangeEvent) {
+    public  UIComponent getUIComponent(ValueChangeEvent valueChangeEvent) {
         UIComponent uic = valueChangeEvent.getComponent();
         return uic;
     }
     
-    public static UIComponent getUIComponent(ActionEvent actionEvent) {
+    public  UIComponent getUIComponent(ActionEvent actionEvent) {
         UIComponent uic = actionEvent.getComponent();
         return uic;
     }
     
-    public static UIComponent getUIComponent(DisclosureEvent disclosureEvent) {
+    public  UIComponent getUIComponent(DisclosureEvent disclosureEvent) {
         UIComponent uic =  disclosureEvent.getComponent();
         return uic;
     }
 
-    public static UIComponent getUIComponentByAbsoluteID(String uiID){
+    public  UIComponent getUIComponentByAbsoluteID(String uiID){
         FacesContext fctx =  FacesContext.getCurrentInstance();
         UIComponent ui = fctx.getViewRoot().findComponent(uiID);
         
@@ -110,12 +110,12 @@ public class UIUtils {
     
     // 
     
-    public static String getUIComponentAbsoluteID(ActionEvent actionEvent) {
+    public  String getUIComponentAbsoluteID(ActionEvent actionEvent) {
         UIComponent uic = actionEvent.getComponent();
         return getUIComponentAbsoluteID(uic);
     }
     
-    public static String getUIComponentAbsoluteID(UIComponent uic){
+    public  String getUIComponentAbsoluteID(UIComponent uic){
         String uicID = UIUtilsPrintImpl.getUIComponentAbsoluteID(uic.getClientId());
         return uicID;
     }
@@ -126,13 +126,13 @@ public class UIUtils {
     ///////////////////////////////////////////////
     
     
-    public static void showMessageOnScreen(String message){
+    public  void showMessageOnScreen(String message){
         UIUtilsShowMessageImpl.onScreen(message);
     }
     
     
     //Show message of type - FATAL, ERROR, WARN, INFO
-    public static void showMessageOnScreen(String msgType, String msg){
+    public  void showMessageOnScreen(String msgType, String msg){
         UIUtilsShowMessageImpl.onScreen(msgType, msg);
     }
 
@@ -141,7 +141,7 @@ public class UIUtils {
     // Run Button Programmatically by JS
     ///////////////////////////////////////////////
     
-    public static void runButtonByJS(String buttonId){
+    public  void runButtonByJS(String buttonId){
         FacesContext context = FacesContext.getCurrentInstance();
 
         StringBuilder script = new StringBuilder();
@@ -161,7 +161,7 @@ public class UIUtils {
     
     
     
-    public static void runButtonByJS(RichButton button){
+    public  void runButtonByJS(RichButton button){
         runButtonByJS(button.getClientId(FacesContext.getCurrentInstance()));
     }
 

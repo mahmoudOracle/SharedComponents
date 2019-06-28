@@ -8,7 +8,7 @@ import oracle.adf.controller.ViewPortContext;
 public class TaskFlowUtils {
     
     
-    public static void printTaskFlowInformation() {
+    public  void printTaskFlowInformation() {
         
         TaskFlowId tfId = TaskFlowUtils.getTaskFlowId();
         

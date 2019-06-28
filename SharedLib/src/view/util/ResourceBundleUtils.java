@@ -13,23 +13,23 @@ import oracle.javatools.resourcebundle.BundleFactory;
 
 public class ResourceBundleUtils {
     
-    private static ADFLogger LOGGER = ADFLogger.createADFLogger(ResourceBundleUtils.class);
-    private static String message_not_found = " not found in resource bundle";
+    private  ADFLogger LOGGER = ADFLogger.createADFLogger(ResourceBundleUtils.class);
+    private  String message_not_found = " not found in resource bundle";
 
-    private static ResourceBundle getBundle(String baseName) {
+    private  ResourceBundle getBundle(String baseName) {
         FacesContext ctx = getFacesContext();
         UIViewRoot uiRoot = ctx.getViewRoot();
         Locale locale = uiRoot.getLocale();
         ClassLoader ldr = Thread.currentThread().getContextClassLoader();
         return ResourceBundle.getBundle(baseName, locale, ldr);
     }
-    public static String getResourceBundleKey(String resourceBundlePath, String key) {  
+    public  String getResourceBundleKey(String resourceBundlePath, String key) {  
       ResourceBundle bundle = getResourceBundle(resourceBundlePath);  
       return (String)getResourceBundleKey(bundle, key);  
     }
 
 
-    private static String getStringSafely(ResourceBundle bundle, String key, String defaultValue) {
+    private  String getStringSafely(ResourceBundle bundle, String key, String defaultValue) {
         String resource = null;
         try {
             resource = bundle.getString(key);
@@ -44,15 +44,15 @@ public class ResourceBundleUtils {
     }
 
 
-    private static FacesContext getFacesContext() {  
+    private  FacesContext getFacesContext() {  
       return FacesContext.getCurrentInstance();  
     }  
     
-    private static ResourceBundle getResourceBundle(String resourceBundlePath) {  
+    private  ResourceBundle getResourceBundle(String resourceBundlePath) {  
       return ResourceBundle.getBundle(resourceBundlePath, getFacesContext().getViewRoot().getLocale());  
     }  
 
-    private static Object getResourceBundleKey(ResourceBundle resourceBundle, String key) {   
+    private  Object getResourceBundleKey(ResourceBundle resourceBundle, String key) {   
       try {  
         return (Object)resourceBundle.getString(key);  
       } catch (MissingResourceException mrExp) {  
@@ -64,21 +64,21 @@ public class ResourceBundleUtils {
 	
 	
 /** function take the resource bundle base Name and the key and return the value from resource bundle */
-  public static String getStringFromBundle(String baseName, String key)
+  public  String getStringFromBundle(String baseName, String key)
   {
     ResourceBundle bundle = getBundle(baseName);
     return getStringSafely(bundle, key, null);
   }
 
 /** function return current application locale */
-  public static Locale getLocale()
+  public  Locale getLocale()
   {
     return getFacesContext().getViewRoot().getLocale();
   }
 
       
 /** function used to set current local*/
-  public static void setBrowserLocal(String locale)
+  public  void setBrowserLocal(String locale)
   {
     FacesContext ctx = FacesContext.getCurrentInstance();
     UIViewRoot uiRoot = ctx.getViewRoot();
@@ -87,7 +87,7 @@ public class ResourceBundleUtils {
   }
 
 /** function return the current browser local ( e.g. "ar" - "en" - ....) */
-  public static String getBrowserLocal()
+  public  String getBrowserLocal()
   {
     FacesContext ctx = FacesContext.getCurrentInstance();
     UIViewRoot uiRoot = ctx.getViewRoot();

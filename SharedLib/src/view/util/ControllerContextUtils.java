@@ -4,7 +4,7 @@ import oracle.adf.controller.ControllerContext;
 
 public class ControllerContextUtils {
     
-    public static void printControllerContextInfo(){
+    public  void printControllerContextInfo(){
         
         System.out.println();
         System.out.println("Controller Context");

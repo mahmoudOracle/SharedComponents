@@ -52,7 +52,7 @@ import org.apache.myfaces.trinidad.render.ExtendedRenderKitService;
 import org.apache.myfaces.trinidad.util.Service;
 
 /**
- * General useful static utilies for working with JSF.
+ * General useful  utilies for working with JSF.
  * NOTE: Updated to use JSF 1.2 ExpressionFactory.
  *
  * @author Duncan Mills
@@ -92,7 +92,7 @@ public class JSFUtils {
     }
 
          
-    private static ResourceBundle getBundle() {
+    private  ResourceBundle getBundle() {
         FacesContext ctx = IteratorUtils.getFacesContext();
         UIViewRoot uiRoot = ctx.getViewRoot();
         Locale locale = uiRoot.getLocale();
@@ -101,7 +101,7 @@ public class JSFUtils {
     }
         
          
-    private static final String NO_RESOURCE_FOUND = "Missing resource: ";
+    private  final String NO_RESOURCE_FOUND = "Missing resource: ";
 
     /**
      * Method for taking a reference to a JSF binding expression and returning
@@ -118,7 +118,7 @@ public class JSFUtils {
         return valueExp.getValue(elContext);
     }
 
-    public static void setValueToEL(String el, Object val) {
+    public  void setValueToEL(String el, Object val) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ELContext elContext = facesContext.getELContext();
         ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
@@ -127,20 +127,20 @@ public class JSFUtils {
     }
 
 
-    public static String resolveRemoteUser() {
+    public  String resolveRemoteUser() {
         FacesContext facesContext = IteratorUtils.getFacesContext();
         ExternalContext ectx = facesContext.getExternalContext();
         return ectx.getRemoteUser();
     }
 
-    public static String resolveUserPrincipal() {
+    public  String resolveUserPrincipal() {
         FacesContext facesContext = IteratorUtils.getFacesContext();
         ExternalContext ectx = facesContext.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) ectx.getRequest();
         return request.getUserPrincipal().getName();
     }
 
-    public static Object resloveMethodExpression(String expression, Class returnType, Class[] argTypes,
+    public  Object resloveMethodExpression(String expression, Class returnType, Class[] argTypes,
                                                  Object[] argValues) {
         FacesContext facesContext = IteratorUtils.getFacesContext();
         Application app = facesContext.getApplication();
@@ -157,7 +157,7 @@ public class JSFUtils {
      * @param expression EL expression
      * @return Managed object
      */
-    public static Boolean resolveExpressionAsBoolean(String expression) {
+    public  Boolean resolveExpressionAsBoolean(String expression) {
         return (Boolean) resolveExpression(expression);
     }
 
@@ -167,7 +167,7 @@ public class JSFUtils {
      * @param expression EL expression
      * @return Managed object
      */
-    public static String resolveExpressionAsString(String expression) {
+    public  String resolveExpressionAsString(String expression) {
         return (String) resolveExpression(expression);
     }
 
@@ -177,7 +177,7 @@ public class JSFUtils {
      * @param beanName name of managed bean
      * @return Managed object
      */
-    public static Object getManagedBeanValue(String beanName) {
+    public  Object getManagedBeanValue(String beanName) {
         StringBuffer buff = new StringBuffer("#{");
         buff.append(beanName);
         buff.append("}");
@@ -191,7 +191,7 @@ public class JSFUtils {
      * @param expression EL expression
      * @param newValue new value to set
      */
-    public static void setExpressionValue(String expression, Object newValue) {
+    public  void setExpressionValue(String expression, Object newValue) {
         FacesContext facesContext = IteratorUtils.getFacesContext();
         Application app = facesContext.getApplication();
         ExpressionFactory elFactory = app.getExpressionFactory();
@@ -215,7 +215,7 @@ public class JSFUtils {
      * @param beanName name of managed bean
      * @param newValue new value to set
      */
-    public static void setManagedBeanValue(String beanName, Object newValue) {
+    public  void setManagedBeanValue(String beanName, Object newValue) {
         StringBuffer buff = new StringBuffer("#{");
         buff.append(beanName);
         buff.append("}");
@@ -229,7 +229,7 @@ public class JSFUtils {
      * @param object value to store
      */
     @SuppressWarnings("unchecked")
-    public static void storeOnSession(String key, Object object) {
+    public  void storeOnSession(String key, Object object) {
         FacesContext ctx = IteratorUtils.getFacesContext();
         Map sessionState = ctx.getExternalContext().getSessionMap();
         sessionState.put(key, object);
@@ -240,13 +240,13 @@ public class JSFUtils {
      * @param key object key
      * @return session object for key
      */
-    public static Object getFromSession(String key) {
+    public  Object getFromSession(String key) {
         FacesContext ctx = IteratorUtils.getFacesContext();
         Map sessionState = ctx.getExternalContext().getSessionMap();
         return sessionState.get(key);
     }
 
-    public static String getFromHeader(String key) {
+    public  String getFromHeader(String key) {
         FacesContext ctx = IteratorUtils.getFacesContext();
         ExternalContext ectx = ctx.getExternalContext();
         return ectx.getRequestHeaderMap().get(key);
@@ -257,7 +257,7 @@ public class JSFUtils {
      * @param key object key
      * @return session object for key
      */
-    public static Object getFromRequest(String key) {
+    public  Object getFromRequest(String key) {
         FacesContext ctx = IteratorUtils.getFacesContext();
         Map sessionState = ctx.getExternalContext().getRequestMap();
         return sessionState.get(key);
@@ -270,7 +270,7 @@ public class JSFUtils {
      * @param key string message key
      * @return Resource value or placeholder error String
      */
-    public static String getStringFromBundle(String key) {
+    public  String getStringFromBundle(String key) {
         ResourceBundle bundle = getBundle();
         return getStringSafely(bundle, key, null);
     }
@@ -287,7 +287,7 @@ public class JSFUtils {
      * @param severity severity of message
      * @return Faces Message object
      */
-    public static FacesMessage getMessageFromBundle(String key, FacesMessage.Severity severity) {
+    public  FacesMessage getMessageFromBundle(String key, FacesMessage.Severity severity) {
         ResourceBundle bundle = getBundle();
         String summary = getStringSafely(bundle, key, null);
         String detail = getStringSafely(bundle, key + "_detail", summary);
@@ -321,7 +321,7 @@ public class JSFUtils {
      * @param attrName name of attribute
      * @param msg error message string
      */
-    public static void addFacesErrorMessage(String attrName, String msg) {
+    public  void addFacesErrorMessage(String attrName, String msg) {
         // TODO: Need a way to associate attribute specific messages
         //       with the UIComponent's Id! For now, just using the view id.
         //TODO: make this use the internal getMessageFromBundle?
@@ -335,7 +335,7 @@ public class JSFUtils {
      * @param attrName name of attribute
      * @param msg error message string
      */
-    public static void addFacesErrorMessage(String compId, String attrName, String msg) {
+    public  void addFacesErrorMessage(String compId, String attrName, String msg) {
         // TODO: Need a way to associate attribute specific messages
         //       with the UIComponent's Id! For now, just using the view id.
         //TODO: make this use the internal getMessageFromBundle?
@@ -346,7 +346,7 @@ public class JSFUtils {
 
 	
 //** function take a message and display it as error message (error icon will appear) */  
-  public static void showErrorMessage(String message) 
+  public  void showErrorMessage(String message) 
   {
     FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null);
     fm.setDetail(message);
@@ -354,7 +354,7 @@ public class JSFUtils {
   }
 
 /** function take a message and display it as information message (information icon will appear) */  
-  public static void showSuccessfulMessage(String message) 
+  public  void showSuccessfulMessage(String message) 
   {
     FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, null, null);
     fm.setDetail(message);
@@ -362,7 +362,7 @@ public class JSFUtils {
   }
 
 /** function take a message and display it as warning message (warn icon will appear) */  
-  public static void showWarnMessage(String message) 
+  public  void showWarnMessage(String message) 
   {
     FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_WARN, null, null);
     fm.setDetail(message);
@@ -375,7 +375,7 @@ public class JSFUtils {
      * @param name attribute name
      * @return attribute value
      */
-    public static Object getRequestAttribute(String name) {
+    public  Object getRequestAttribute(String name) {
         return IteratorUtils.getFacesContext().getExternalContext()
                                 .getRequestMap()
                                 .get(name);
@@ -386,7 +386,7 @@ public class JSFUtils {
      * @param name attribute name
      * @param value attribute value
      */
-    public static void setRequestAttribute(String name, Object value) {
+    public  void setRequestAttribute(String name, Object value) {
         IteratorUtils.getFacesContext().getExternalContext()
                          .getRequestMap()
                          .put(name, value);
@@ -396,7 +396,7 @@ public class JSFUtils {
    * Internal method to proxy for resource keys that don't exist
    */
 
-    private static String getStringSafely(ResourceBundle bundle, String key, String defaultValue) {
+    private  String getStringSafely(ResourceBundle bundle, String key, String defaultValue) {
         String resource = null;
         try {
             resource = bundle.getString(key);
@@ -416,7 +416,7 @@ public class JSFUtils {
      * @param id UIComponent id
      * @return UIComponent object // by going to the af document tag of the page and chooose property initialFocusId to refer to the desired component
      */
-    public static UIComponent findComponentInRoot(String id) {
+    public  UIComponent findComponentInRoot(String id) {
         UIComponent component = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (facesContext != null) {
@@ -433,7 +433,7 @@ public class JSFUtils {
      * @param id UIComponent id
      * @return UIComponent object
      */
-    public static UIComponent findComponent(UIComponent base, String id) {
+    public  UIComponent findComponent(UIComponent base, String id) {
         if (id.equals(base.getId()))
             return base;
 
@@ -454,7 +454,7 @@ public class JSFUtils {
         return result;
     }
 
-    private static void writeJavaScriptToClient(String script) {
+    private  void writeJavaScriptToClient(String script) {
         FacesContext fctx = FacesContext.getCurrentInstance();
         ExtendedRenderKitService erks = Service.getRenderKitService(fctx, ExtendedRenderKitService.class);
         erks.addScript(fctx, script);
@@ -462,7 +462,7 @@ public class JSFUtils {
 
 
 	/** function take URL and open it in new window */
-  public static void openUrlInNewWindow(String url)
+  public  void openUrlInNewWindow(String url)
   {
     StringBuilder strb = new StringBuilder("window.open('" + url + "');");
     writeJavaScriptToClient(strb.toString());
@@ -476,7 +476,7 @@ public class JSFUtils {
      * @param view the JSP or JSPX page to redirect to
      * @return a URL to redirect to
      */
-    public static String getPageURL(String view) {
+    public  String getPageURL(String view) {
         FacesContext facesContext = IteratorUtils.getFacesContext();
         ExternalContext externalContext = facesContext.getExternalContext();
         String url = ((HttpServletRequest) externalContext.getRequest()).getRequestURL().toString();
@@ -492,8 +492,8 @@ public class JSFUtils {
     * @param URL
     * This would redirect to the passed Url
     */
-    public static void redirect(String URL) {
-    //logger.info(“Now_redirecting_it_to :”+URL);
+    public  void redirect(String URL) {
+    //logger.info(“Now_redirecting_it_to :�?+URL);
     FacesContext context = FacesContext.getCurrentInstance();
     ExternalContext externalContext = context.getExternalContext();
     HttpServletRequest req = (HttpServletRequest)context.getExternalContext().getRequest();
@@ -505,7 +505,7 @@ public class JSFUtils {
     } catch (IOException e) {
     // log URL that failed
     // throw it back as RuntimeException
-   // logger.severe(“RedirectionException failed ” + e.getMessage());
+   // logger.severe(“RedirectionException failed �? + e.getMessage());
     throw new RuntimeException(e);
     }
     }
@@ -515,7 +515,7 @@ public class JSFUtils {
      * @param expression
      * @return Object
      */
-    public static Object getExpressionObjectReference(String expression) {
+    public  static Object getExpressionObjectReference(String expression) {
         FacesContext fc = FacesContext.getCurrentInstance();
         ELContext elctx = fc.getELContext();
         ExpressionFactory elFactory = fc.getApplication().getExpressionFactory();
@@ -533,7 +533,7 @@ public class JSFUtils {
      * @param argument
      * @return
      */
-    public static Object invokeMethodExpression(String expr, Class returnType, Class argType, Object argument) {
+    public  Object invokeMethodExpression(String expr, Class returnType, Class argType, Object argument) {
         FacesContext fc = FacesContext.getCurrentInstance();
         ELContext elctx = fc.getELContext();
         ExpressionFactory elFactory = fc.getApplication().getExpressionFactory();
@@ -543,16 +543,16 @@ public class JSFUtils {
     }
 
 
-    private static Map<String, SelectItem> selectItems = new HashMap<String, SelectItem>();
+    private  Map<String, SelectItem> selectItems = new HashMap<String, SelectItem>();
 
 
-    public static void addFacesInfoMessage(String msg) {
+    public  void addFacesInfoMessage(String msg) {
         FacesContext ctx = FacesContext.getCurrentInstance();
         FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "");
         ctx.addMessage(getRootViewComponentId(), fm);
     }
 
-    public static SelectItem getSelectItem(String value) {
+    public  SelectItem getSelectItem(String value) {
         SelectItem item = selectItems.get(value);
         if (item == null) {
             item = createNewSelectItem(value, value);
@@ -561,22 +561,22 @@ public class JSFUtils {
         return item;
     }
 
-    public static SelectItem createNewSelectItem(String label, String value) {
+    public  SelectItem createNewSelectItem(String label, String value) {
         return new SelectItem(value, label);
     }
 
-    public static HttpServletResponse getResponse() {
+    public  HttpServletResponse getResponse() {
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
         return response;
 
     }
 
-    public static BindingContainer getBindingContainer() {
+    public  BindingContainer getBindingContainer() {
         return (BindingContainer) JSFUtils.resolveExpression("#{bindings}");
     }
 
-    public static boolean hasRecords(String iteratorName) {
+    public  boolean hasRecords(String iteratorName) {
         Row[] rows = getAllRows(iteratorName);
         if ((rows == null) || (rows.length == 0)) {
             return false;
@@ -585,7 +585,7 @@ public class JSFUtils {
     }
 
 
-    public static void setIteratorPosition(String iteratorName, String whereClause) throws Exception {
+    public  void setIteratorPosition(String iteratorName, String whereClause) throws Exception {
         ViewObject viewObject = getViewObject(iteratorName);
         if (viewObject.getWhereClause() != null) {
             viewObject.setWhereClauseParams(null);
@@ -599,9 +599,9 @@ public class JSFUtils {
     }
 
 
-    public static ViewObject getViewObject(String iteratorName) {
+    public  ViewObject getViewObject(String iteratorName) {
         ViewObject viewObject = null;
-        BindingContainer bindings = JSFUtils.getBindingContainer();
+        BindingContainer bindings = ADFUtils.getBindingContainer();
         if (bindings != null) {
             DCIteratorBinding iter = (DCIteratorBinding) bindings.get(iteratorName);
             viewObject = iter.getViewObject();
@@ -609,14 +609,14 @@ public class JSFUtils {
         return viewObject;
     }
 
-    public static Row[] getAllRows(String iteratorName) {
+    public  Row[] getAllRows(String iteratorName) {
         ViewObject vObject = getViewObject(iteratorName);
         vObject.executeQuery();
         Row[] rows = vObject.getAllRowsInRange();
         return rows;
     }
 
-    public static ViewObject executeViewObject(String iteratorName) {
+    public  ViewObject executeViewObject(String iteratorName) {
         ViewObject vObject = getViewObject(iteratorName);
         vObject.executeQuery();
         System.out.println("....Total rows..." + vObject.getRowCount());
@@ -624,7 +624,7 @@ public class JSFUtils {
     }
 
 
-    public static Row getCurrentRow(String iteratorName) {
+    public  Row getCurrentRow(String iteratorName) {
         BindingContainer bindings = getBindingContainer();
         Row currentRow = null;
         if (bindings != null) {
@@ -636,7 +636,7 @@ public class JSFUtils {
         return currentRow;
     }
 
-    public static void executeIterator(String iteratorName) {
+    public  void executeIterator(String iteratorName) {
         BindingContainer bindings = getBindingContainer();
         if (bindings != null) {
             DCIteratorBinding iter = (DCIteratorBinding) bindings.get(iteratorName);
@@ -645,12 +645,12 @@ public class JSFUtils {
         }
     }
 
-    public static Object getCurrentRowAttribute(String iteratorName, String attributeName) {
+    public  Object getCurrentRowAttribute(String iteratorName, String attributeName) {
         Row row = getCurrentRow(iteratorName);
         return row.getAttribute(attributeName);
     }
 
-    public static Object getFromRequestParameterMap(String key) {
+    public  Object getFromRequestParameterMap(String key) {
         FacesContext ctx = FacesContext.getCurrentInstance();
         return ctx.getExternalContext()
                   .getRequestParameterMap()
@@ -658,16 +658,16 @@ public class JSFUtils {
 
     }
 
-    public static void postMessageToFacesContext(FacesMessage.Severity severity, String summary, String detail) {
+    public  void postMessageToFacesContext(FacesMessage.Severity severity, String summary, String detail) {
         postMessage(null, severity, summary, detail);
     }
 
-    public static void postMessage(String componentId, FacesMessage.Severity severity, String summary, String detail) {
+    public  void postMessage(String componentId, FacesMessage.Severity severity, String summary, String detail) {
         IteratorUtils.getFacesContext().addMessage(componentId, new FacesMessage(severity, summary, detail));
     }
 
 
-    public static String getURLFromServletContext(String paramName) {
+    public  String getURLFromServletContext(String paramName) {
 
         ServletContext sc = (ServletContext) FacesContext.getCurrentInstance()
                                                          .getExternalContext()
@@ -680,7 +680,7 @@ public class JSFUtils {
     }
 
 
-    public static MethodExpression getSDMethodExpression(String name) {
+    public  MethodExpression getSDMethodExpression(String name) {
         Class[] argtypes = new Class[1];
         argtypes[0] = DisclosureEvent.class;
         FacesContext facesCtx = FacesContext.getCurrentInstance();
@@ -692,7 +692,7 @@ public class JSFUtils {
 
     // return a methodexpression like a control flow case action or ADF pagedef action
 
-    public static MethodExpression getMethodExpression(String name) {
+    public  MethodExpression getMethodExpression(String name) {
         Class[] argtypes = new Class[1];
         argtypes[0] = ActionEvent.class;
         FacesContext facesCtx = FacesContext.getCurrentInstance();
@@ -705,7 +705,7 @@ public class JSFUtils {
     /**
     * @return the current Locale language and Country code
     */
-    public static String getLanguageAndCountryCode() {
+    public  String getLanguageAndCountryCode() {
     ADFContext adfctx = ADFContext.getCurrent();
     String langCountryCode = adfctx.getLocale().toString();
     return langCountryCode != null ? langCountryCode.replace('_', '-') : langCountryCode;
@@ -716,7 +716,7 @@ public class JSFUtils {
     * @param name
     * @param value
     */
-    public static void storeOnApplication(String name, Object value) {
+    public  void storeOnApplication(String name, Object value) {
     FacesContext ctx = IteratorUtils.getFacesContext();
     Map applicationState = ctx.getExternalContext().getApplicationMap();
     applicationState.put(name, value);
@@ -729,7 +729,7 @@ public class JSFUtils {
     * @param name
     * @param value
     */
-    public static void storeOnPageFlow(String name, Object value) {
+    public  void storeOnPageFlow(String name, Object value) {
     RequestContext.getCurrentInstance().getPageFlowScope().put(name, value);
 
     //ADFContext.getCurrent().getPageFlowScope().put(name, value);
@@ -740,7 +740,7 @@ public class JSFUtils {
     * @param name
     * @param value
     */
-    public static void storeOnView(String name, Object value) {
+    public  void storeOnView(String name, Object value) {
     RequestContext.getCurrentInstance().getViewMap().put(name, value);
 
     //ADFContext.getCurrent().getViewScope().put(name, value);
@@ -751,7 +751,7 @@ public class JSFUtils {
     * @param key object key
     * @param object value to store
     */
-    public static void storeOnRequest(String key, Object object) {
+    public  void storeOnRequest(String key, Object object) {
     FacesContext ctx = IteratorUtils.getFacesContext();
     Map sessionState = ctx.getExternalContext().getRequestMap();
     sessionState.put(key, object);
@@ -761,11 +761,11 @@ public class JSFUtils {
 
     /**
      * Refresh an UIComponent.
-     * “faces”, which is the default
+     * “faces�?, which is the default
      *
      * @param component Component to be refreshed
      */
-    public static void refreshComponent(UIComponent component) {
+    public  void refreshComponent(UIComponent component) {
         if (component != null) {
             AdfFacesContext.getCurrentInstance().addPartialTarget(component);
         }
@@ -788,7 +788,7 @@ public class JSFUtils {
     *Get Client Ip Address
     * @return
     */
-    public static String getClientIpAddress() {
+    public  String getClientIpAddress() {
     HttpServletRequest request =
     (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
@@ -806,7 +806,7 @@ public class JSFUtils {
     * @param cookieName
     * @param cookieValue
     */
-    public static void setCookieValue(HttpServletResponse response, String cookieName, String cookieValue) {
+    public  void setCookieValue(HttpServletResponse response, String cookieName, String cookieValue) {
     if (cookieValue != null && !cookieValue.contains(";HttpOnly; secure")) {
     cookieValue += ";HttpOnly; secure";
     }
@@ -822,7 +822,7 @@ public class JSFUtils {
     * @param cookieName
     * @return
     */
-    public static String retrieveFromCookie(String cookieName) {
+    public  String retrieveFromCookie(String cookieName) {
     FacesContext vFacesContext = FacesContext.getCurrentInstance();
     ExternalContext vExternalContext = vFacesContext.getExternalContext();
     Map vRequestCookieMap = vExternalContext.getRequestCookieMap();

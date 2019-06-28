@@ -5,7 +5,7 @@ import oracle.adf.view.rich.component.rich.RichPopup;
 
 public class PopupUtils {
 
-   public static boolean hideParentPopup(UIComponent component){
+   public  boolean hideParentPopup(UIComponent component){
         RichPopup parentPopUp=retriveParentPopUp(component);
         if(parentPopUp==null){
             return false;
@@ -14,7 +14,7 @@ public class PopupUtils {
             return true;
         }
     
-    private static RichPopup retriveParentPopUp(UIComponent component){
+    private  RichPopup retriveParentPopUp(UIComponent component){
         if(component==null){
             return null;
         }
@@ -26,7 +26,7 @@ public class PopupUtils {
     }
     
     
-    public static void closeDoubleParentPopup (UIComponent component){
+    public  void closeDoubleParentPopup (UIComponent component){
         
         RichPopup firstParentPopup = retriveParentPopUp(component);
         RichPopup secondParentPopup = retriveParentPopUp(firstParentPopup.getParent());

@@ -16,7 +16,7 @@ public class ExpressionUtils {
     // Работающий привер вызвова
     // ExpressionUtils.setValueByExpression("#{bindings.lov_My.attributeFromValueList}", valueChangeEvent.getNewValue());   
     
-    public static void setValueByExpression(String el, Object val) {
+    public void setValueByExpression(String el, Object val) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ELContext elContext = facesContext.getELContext();
         ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
@@ -28,7 +28,7 @@ public class ExpressionUtils {
     // Работающий привер вызвова
     // ExpressionUtils.getValueByExpression("#{bindings.lov_My.attribute}"));
     
-    public static String getValueByExpression(String data) {
+    public  String getValueByExpression(String data) {
         FacesContext fc = FacesContext.getCurrentInstance();
         Application app = fc.getApplication();
         ExpressionFactory elFactory = app.getExpressionFactory();
@@ -42,7 +42,7 @@ public class ExpressionUtils {
         return Message;
     }
     
-    public static Object invokeEL(String el, Class[] paramTypes, Object[] params) {
+    public  Object invokeEL(String el, Class[] paramTypes, Object[] params) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ELContext elContext = facesContext.getELContext();
         ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
@@ -66,7 +66,7 @@ public class ExpressionUtils {
         return exp.getValue(elContext);
     }
         
-    public static ValueExpression getValueExpression(String name) {  
+    public  ValueExpression getValueExpression(String name) {  
         FacesContext facesCtx = FacesContext.getCurrentInstance();  
         Application app = facesCtx.getApplication();  
         ExpressionFactory elFactory = app.getExpressionFactory();  

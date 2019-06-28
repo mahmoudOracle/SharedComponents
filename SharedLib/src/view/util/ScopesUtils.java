@@ -17,7 +17,7 @@ public class ScopesUtils {
     
     
     /** function return application facesContext */
-    public static FacesContext getFacesContext() {
+    public  FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
     }
 
@@ -26,7 +26,7 @@ public class ScopesUtils {
     // PageFlowScope
     ///////////////////////////////////////////////
 
-    public static void printPageFlowScopeVar2() {
+    public  void printPageFlowScopeVar2() {
       AdfFacesContext facesCtx= null;
       facesCtx= AdfFacesContext.getCurrentInstance();
       Map<String, Object> scopeVar= facesCtx.getPageFlowScope();
@@ -40,12 +40,12 @@ public class ScopesUtils {
     }
 
 
-    public static void printPageFlowScope(){
+    public  void printPageFlowScope(){
         printPageFlowScope(getCurrntPageFlowScope());
     }
 
 
-    public static void printPageFlowScope(PageFlowScope pageFlowScope){
+    public  void printPageFlowScope(PageFlowScope pageFlowScope){
 
         Set<Map.Entry<String, Object>> entrySet = pageFlowScope.entrySet();
 
@@ -65,17 +65,17 @@ public class ScopesUtils {
 
     // -----------------------------------------------------
 
-    public static PageFlowScope getCurrntPageFlowScope(){
+    public  PageFlowScope getCurrntPageFlowScope(){
         return (PageFlowScope)AdfFacesContext.getCurrentInstance().getPageFlowScope();
     }
 
     // -----------------------------------------------------
 
-    public static void setVarToPageFlowScope(String varNameInPageFlowScope, String newValue){
+    public  void setVarToPageFlowScope(String varNameInPageFlowScope, String newValue){
         ADFContext.getCurrent().getPageFlowScope().put(varNameInPageFlowScope, newValue);
     }
 
-    public static Object getObjectFromPageFlowScope(String varNameInPageFlowScope){
+    public  Object getObjectFromPageFlowScope(String varNameInPageFlowScope){
         return (Object)ADFContext.getCurrent().getPageFlowScope().get(varNameInPageFlowScope);
     }
 
@@ -83,18 +83,18 @@ public class ScopesUtils {
     // SessionScope
     ///////////////////////////////////////////////
 
-    public static void setVarToSessionScope(String varNameInPageFlowScope, String newValue){
+    public  void setVarToSessionScope(String varNameInPageFlowScope, String newValue){
         ADFContext.getCurrent().getSessionScope().put(varNameInPageFlowScope, newValue);
     }
 
-    public static void setObjectToSessionScope(Object varNameInPageFlowScope, String newValue){
+    public  void setObjectToSessionScope(Object varNameInPageFlowScope, String newValue){
         ADFContext.getCurrent().getSessionScope().put(varNameInPageFlowScope, newValue);
     }
 	
 	
 	
 /** function take session variable name and object then save this object inside the variable name in the session scope */
-  public static void putInSession(String key, Object object)
+  public  void putInSession(String key, Object object)
   {
     try
     {
@@ -109,7 +109,7 @@ public class ScopesUtils {
   }
 
 /** function take session variable name and return the value inside this variable name from the session scope */
-  public static Object getFromSession(String key)
+  public  Object getFromSession(String key)
   {
     try
     {
@@ -125,13 +125,13 @@ public class ScopesUtils {
   }
 
 /** function take request variable name and object then save this object inside the variable name in the request scope */
-  public static void putInRequest(String name, Object value)
+  public  void putInRequest(String name, Object value)
   {
     getFacesContext().getExternalContext().getRequestMap().put(name, value);
   }
   
 /** function take request variable name and return the value inside this variable name from the request scope */
-  public static Object getFromRequest(String name)
+  public  Object getFromRequest(String name)
   {
     return getFacesContext().getExternalContext().getRequestMap().get(name);
   }
