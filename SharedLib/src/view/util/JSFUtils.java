@@ -75,6 +75,8 @@ public class JSFUtils {
     }
 
 
+  
+    
     
     /*
     * Internal method to pull out the correct local
@@ -769,6 +771,11 @@ public class JSFUtils {
         if (component != null) {
             AdfFacesContext.getCurrentInstance().addPartialTarget(component);
         }
+    }
+
+    /** function take component object and refresh this component */
+    public void refreshComponentViaRequestCtx(UIComponent component) {
+        RequestContext.getCurrentInstance().addPartialTarget(component);
     }
     
 

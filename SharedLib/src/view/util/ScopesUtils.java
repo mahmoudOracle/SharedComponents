@@ -17,7 +17,7 @@ public class ScopesUtils {
     
     
     /** function return application facesContext */
-    public  FacesContext getFacesContext() {
+    public static  FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
     }
 
@@ -26,7 +26,7 @@ public class ScopesUtils {
     // PageFlowScope
     ///////////////////////////////////////////////
 
-    public  void printPageFlowScopeVar2() {
+    public static void printPageFlowScopeVar2() {
       AdfFacesContext facesCtx= null;
       facesCtx= AdfFacesContext.getCurrentInstance();
       Map<String, Object> scopeVar= facesCtx.getPageFlowScope();
@@ -40,12 +40,12 @@ public class ScopesUtils {
     }
 
 
-    public  void printPageFlowScope(){
+    public static  void printPageFlowScope(){
         printPageFlowScope(getCurrntPageFlowScope());
     }
 
 
-    public  void printPageFlowScope(PageFlowScope pageFlowScope){
+    public static  void printPageFlowScope(PageFlowScope pageFlowScope){
 
         Set<Map.Entry<String, Object>> entrySet = pageFlowScope.entrySet();
 
@@ -65,17 +65,17 @@ public class ScopesUtils {
 
     // -----------------------------------------------------
 
-    public  PageFlowScope getCurrntPageFlowScope(){
+    public static PageFlowScope getCurrntPageFlowScope(){
         return (PageFlowScope)AdfFacesContext.getCurrentInstance().getPageFlowScope();
     }
 
     // -----------------------------------------------------
 
-    public  void setVarToPageFlowScope(String varNameInPageFlowScope, String newValue){
+    public static  void setVarToPageFlowScope(String varNameInPageFlowScope, String newValue){
         ADFContext.getCurrent().getPageFlowScope().put(varNameInPageFlowScope, newValue);
     }
 
-    public  Object getObjectFromPageFlowScope(String varNameInPageFlowScope){
+    public static Object getObjectFromPageFlowScope(String varNameInPageFlowScope){
         return (Object)ADFContext.getCurrent().getPageFlowScope().get(varNameInPageFlowScope);
     }
 
@@ -83,18 +83,18 @@ public class ScopesUtils {
     // SessionScope
     ///////////////////////////////////////////////
 
-    public  void setVarToSessionScope(String varNameInPageFlowScope, String newValue){
+    public static void setVarToSessionScope(String varNameInPageFlowScope, String newValue){
         ADFContext.getCurrent().getSessionScope().put(varNameInPageFlowScope, newValue);
     }
 
-    public  void setObjectToSessionScope(Object varNameInPageFlowScope, String newValue){
+    public static  void setObjectToSessionScope(Object varNameInPageFlowScope, String newValue){
         ADFContext.getCurrent().getSessionScope().put(varNameInPageFlowScope, newValue);
     }
 	
 	
 	
 /** function take session variable name and object then save this object inside the variable name in the session scope */
-  public  void putInSession(String key, Object object)
+  public static  void putInSession(String key, Object object)
   {
     try
     {
@@ -109,7 +109,7 @@ public class ScopesUtils {
   }
 
 /** function take session variable name and return the value inside this variable name from the session scope */
-  public  Object getFromSession(String key)
+  public static Object getFromSession(String key)
   {
     try
     {
@@ -125,18 +125,18 @@ public class ScopesUtils {
   }
 
 /** function take request variable name and object then save this object inside the variable name in the request scope */
-  public  void putInRequest(String name, Object value)
+  public static  void putInRequest(String name, Object value)
   {
     getFacesContext().getExternalContext().getRequestMap().put(name, value);
   }
   
 /** function take request variable name and return the value inside this variable name from the request scope */
-  public  Object getFromRequest(String name)
+  public static Object getFromRequest(String name)
   {
     return getFacesContext().getExternalContext().getRequestMap().get(name);
   }
 
-    public Object getScopeParameterValue(String ParameterName, String Typ) {
+    public static Object getScopeParameterValue(String ParameterName, String Typ) {
         if (Typ.equalsIgnoreCase("SessionScope")) {
             return ADFContext.getCurrent()
                              .getSessionScope()
@@ -149,7 +149,7 @@ public class ScopesUtils {
     }
 
 
-    public void putScopeParameterValue(String ParameterName, Object value, String Typ) {
+    public static void putScopeParameterValue(String ParameterName, Object value, String Typ) {
         if (Typ.equalsIgnoreCase("SessionScope")) {
             ADFContext.getCurrent()
                       .getSessionScope()
@@ -227,37 +227,37 @@ public class ScopesUtils {
 
 
     //     //Web App context root
-    //    public String getWebAppContextRoot(){
+    //    public static String getWebAppContextRoot(){
     //        return _extCtx.getRequestContextPath();
     //    }//getWebAppContextRoot
     //
     //    //Get Application Scope
-    //    public Map<String, Object> getApplicationScope(){
+    //    public static Map<String, Object> getApplicationScope(){
     //        return _adfCtx.getApplicationScope();
     //    }//getApplicationScope
     //
     //    //Get Session Scope
-    //    public Map<String, Object> getSessionScope(){
+    //    public static Map<String, Object> getSessionScope(){
     //        return _adfCtx.getSessionScope();
     //    }//getSessionScope
     //
     //    //Get PageFlowScope
-    //    public Map<String,Object> getPageFlowScope(){
+    //    public static Map<String,Object> getPageFlowScope(){
     //        return _adfFacesCtx.getPageFlowScope();
     //    }//getPageFlowScope
     //
     //    //Get Alternative PageFlowScope
-    //    public Map<String,Object> getPageFlowScope2(){
+    //    public static Map<String,Object> getPageFlowScope2(){
     //        return _adfCtx.getPageFlowScope();
     //    }//getPageFlowScope2
     //
     //    //Get ViewScope
-    //    public Map<String,Object> getViewScope(){
+    //    public static Map<String,Object> getViewScope(){
     //        return _adfFacesCtx.getViewScope();
     //    }//getViewScope
     //
     //    //Get Request Scope
-    //    public Map<String, String> getRequestScope(){
+    //    public static Map<String, String> getRequestScope(){
     //        return _adfCtx.getRequestScope();
     //    }//getRequestScope
 

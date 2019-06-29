@@ -13,23 +13,23 @@ import oracle.javatools.resourcebundle.BundleFactory;
 
 public class ResourceBundleUtils {
     
-    private  ADFLogger LOGGER = ADFLogger.createADFLogger(ResourceBundleUtils.class);
-    private  String message_not_found = " not found in resource bundle";
+    private static ADFLogger LOGGER = ADFLogger.createADFLogger(ResourceBundleUtils.class);
+    private static String message_not_found = " not found in resource bundle";
 
-    private  ResourceBundle getBundle(String baseName) {
+    private static ResourceBundle getBundle(String baseName) {
         FacesContext ctx = getFacesContext();
         UIViewRoot uiRoot = ctx.getViewRoot();
         Locale locale = uiRoot.getLocale();
         ClassLoader ldr = Thread.currentThread().getContextClassLoader();
         return ResourceBundle.getBundle(baseName, locale, ldr);
     }
-    public  String getResourceBundleKey(String resourceBundlePath, String key) {  
+    public static   String getResourceBundleKey(String resourceBundlePath, String key) {  
       ResourceBundle bundle = getResourceBundle(resourceBundlePath);  
       return (String)getResourceBundleKey(bundle, key);  
     }
 
 
-    private  String getStringSafely(ResourceBundle bundle, String key, String defaultValue) {
+    private static String getStringSafely(ResourceBundle bundle, String key, String defaultValue) {
         String resource = null;
         try {
             resource = bundle.getString(key);
@@ -44,15 +44,15 @@ public class ResourceBundleUtils {
     }
 
 
-    private  FacesContext getFacesContext() {  
+    private static FacesContext getFacesContext() {  
       return FacesContext.getCurrentInstance();  
     }  
     
-    private  ResourceBundle getResourceBundle(String resourceBundlePath) {  
+    private static ResourceBundle getResourceBundle(String resourceBundlePath) {  
       return ResourceBundle.getBundle(resourceBundlePath, getFacesContext().getViewRoot().getLocale());  
     }  
 
-    private  Object getResourceBundleKey(ResourceBundle resourceBundle, String key) {   
+    private static Object getResourceBundleKey(ResourceBundle resourceBundle, String key) {   
       try {  
         return (Object)resourceBundle.getString(key);  
       } catch (MissingResourceException mrExp) {  
@@ -64,21 +64,21 @@ public class ResourceBundleUtils {
 	
 	
 /** function take the resource bundle base Name and the key and return the value from resource bundle */
-  public  String getStringFromBundle(String baseName, String key)
+  public static String getStringFromBundle(String baseName, String key)
   {
     ResourceBundle bundle = getBundle(baseName);
     return getStringSafely(bundle, key, null);
   }
 
 /** function return current application locale */
-  public  Locale getLocale()
+  public static   Locale getLocale()
   {
     return getFacesContext().getViewRoot().getLocale();
   }
 
       
 /** function used to set current local*/
-  public  void setBrowserLocal(String locale)
+  public static   void setBrowserLocal(String locale)
   {
     FacesContext ctx = FacesContext.getCurrentInstance();
     UIViewRoot uiRoot = ctx.getViewRoot();
@@ -87,14 +87,14 @@ public class ResourceBundleUtils {
   }
 
 /** function return the current browser local ( e.g. "ar" - "en" - ....) */
-  public  String getBrowserLocal()
+  public static   String getBrowserLocal()
   {
     FacesContext ctx = FacesContext.getCurrentInstance();
     UIViewRoot uiRoot = ctx.getViewRoot();
     return uiRoot.getLocale().toString();
   }
 	
-    public void SwitchLocale(String _pLocale) {
+    public static  void SwitchLocale(String _pLocale) {
         if (_pLocale != null && !_pLocale.equals("")) {
             FacesContext fc = FacesContext.getCurrentInstance();
             Locale locale = new Locale(_pLocale);
@@ -102,7 +102,7 @@ public class ResourceBundleUtils {
         }    
     }
 
-    public String AccessBundleItemValue(String BundleName, String BundleNameItem) {
+    public static  String AccessBundleItemValue(String BundleName, String BundleNameItem) {
         ResourceBundle bundle = BundleFactory.getBundle(BundleName);
         return bundle.getString(BundleNameItem);
     }

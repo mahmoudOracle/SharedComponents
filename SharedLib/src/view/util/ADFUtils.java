@@ -189,7 +189,6 @@ public class ADFUtils {
 
 
     /** function used to rollback any changes to the last commit point without changing current row of the passed iterator*/
-
     public void rollbackAndBeInTheCurrentRow(String iteratorName) {
         try {
             DCIteratorBinding locationsIter = IteratorUtils.findIterator(iteratorName);
@@ -197,7 +196,9 @@ public class ADFUtils {
             Key key = null;
             if (lRow != null) {
                 key = lRow.getKey();
+                System.out.println("Printing KEy Value is >> " + key.toString());
             }
+            System.out.println("Before Calling Roll Back");
             IteratorUtils.executeOperation("Rollback");
             if (key != null) {
                 locationsIter.setCurrentRowWithKey(key.toStringFormat(true));
@@ -206,7 +207,6 @@ public class ADFUtils {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Get application module for an application module data control by name.
@@ -1034,41 +1034,8 @@ public class ADFUtils {
         return attributesMapForIterator(IteratorUtils.findIterator(iteratorName), keyAttrName, valueAttrName);
     }
 
-
-    /**
-     * Programmatic evaluation of EL.
-     *
-     * @param el EL to evaluate
-     * @return Result of the evaluation
-     */
-    /*     public  Object evaluateEL(String el) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ELContext elContext = facesContext.getELContext();
-        ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
-        ValueExpression exp = expressionFactory.createValueExpression(elContext, el, Object.class);
-
-        return exp.getValue(elContext);
-    } */
-
-    public static Object evaluateEL(String el) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ELContext elContext = facesContext.getELContext();
-        ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
-        ValueExpression exp = expressionFactory.createValueExpression(elContext, el, Object.class);
-        if (exp == null || elContext == null) {
-            return null;
-        }
-        Object obj = null;
-        try {
-            obj = exp.getValue(elContext);
-        } catch (ManagedBeanCreationException ex) {
-
-        }
-        return obj;
-    }
-
     public String getLocaleValue(String el, String code) {
-        Map map = (Map) evaluateEL(el);
+        Map map = (Map) ExpressionUtils.evaluateEL(el);
         if (map != null) {
             if (map.get(code) != null)
                 return (String) map.get(code);
@@ -1201,7 +1168,7 @@ public class ADFUtils {
      * @return
      */
     public DCDataControl findDataControl(String controlName) {
-        DCBindingContainer context = (DCBindingContainer) ADFUtils.evaluateEL("#{bindings}");
+        DCBindingContainer context = (DCBindingContainer) ExpressionUtils.evaluateEL("#{bindings}");
         DCDataControl dcf = context.findDataControl(controlName);
         return dcf;
     }
@@ -1330,15 +1297,6 @@ public class ADFUtils {
           .getNavigationHandler()
           .handleNavigation(fc, null, outcome);
     }
-
-    /** function For Cancelling any Changes Happened In The Row (Create New Row or Update Row) */
-    public void cancelChangesInCurrentRow(String iteratorName) {
-        DCIteratorBinding iterBinding = IteratorUtils.getIterator(iteratorName);
-        ViewObject vo = iterBinding.getViewObject();
-        Row currentRow = vo.getCurrentRow();
-        currentRow.refresh(Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES);
-    }
-
 
     /** function used for uploading file */
     public void uploadFile(ValueChangeEvent valueChangeEvent, String fileLocation, String fileName) {

@@ -12,11 +12,11 @@ public class DBUtils {
     
     /** function return application database transaction object */
     // takes the defaulta applicaiton Module -- we can add code for named app module >>> getApplicationModuleForDataControl
-    public  DBTransaction getDefaultDBTransaction() {
+    public static  DBTransaction getDefaultDBTransaction() {
         return (DBTransaction) IteratorUtils.getDefaultApplicationModule().getTransaction();
     }
 
-    public  DBTransaction getDBTransaction(){
+    public static  DBTransaction getDBTransaction(){
         ApplicationModuleImpl am = (ApplicationModuleImpl) ADFUtils.getApplicationModuleForDataControl(CONSTANTS_VO.AppModuleName);
         DBTransaction db = null;
         db = am.getDBTransaction();            
@@ -25,7 +25,7 @@ public class DBUtils {
 
 
 /** function return current application database connection */
-  public  Connection getConnection()
+  public static  Connection getConnection()
   {
     DBTransactionImpl dbt = (DBTransactionImpl) getDefaultDBTransaction();
     Connection conn = dbt.getPersistManagerConnection();
@@ -50,7 +50,7 @@ public class DBUtils {
   }
 
 /** function used to close ResultSet */
-  public  void close(ResultSet rs)
+  public static  void close(ResultSet rs)
   {
     try
     {
@@ -66,7 +66,7 @@ public class DBUtils {
   }
 
 /** function used to close CallableStatement */
-  public  void close(java.sql.CallableStatement cstat)
+  public static  void close(java.sql.CallableStatement cstat)
   {
     try
     {
@@ -82,14 +82,14 @@ public class DBUtils {
   }
            
 /** function take a double number and integer number then round the double number with the integer number (e.g  roundToDecimals(15.22545112, 3) then the output will be 15.225) */ 
-  public  double roundToDecimals(double d, int c)
+  public static  double roundToDecimals(double d, int c)
   {
     int temp = (int) ((d * Math.pow(10, c)));
     return (((double) temp) / Math.pow(10, c));
   }
 
 /** function take sql statement and return the result value e.g (getSqlDescription("select username from users where user_id=10") --> function will return username value) */
-  public  String getSqlDescription(String sql)
+  public static  String getSqlDescription(String sql)
   {
     PreparedStatement stat = null;
     ResultSet rs = null;
@@ -115,7 +115,7 @@ public class DBUtils {
   }
 
   /** function take sql statement and return the result as double */
-  public  double getSqlAsDuoble(String sql)
+  public static  double getSqlAsDuoble(String sql)
   {
     PreparedStatement stat = null;
     ResultSet rs = null;
@@ -142,7 +142,7 @@ public class DBUtils {
   
   
   /** function take sql statement and return the result as long */
-  public  long getSqlAsLong(String sql)
+  public static  long getSqlAsLong(String sql)
   {
     PreparedStatement stat = null;
     ResultSet rs = null;
@@ -171,7 +171,7 @@ public class DBUtils {
 
     // For Information
     
-//    public  DBTransaction getDBTransaction(){
+//    public static  DBTransaction getDBTransaction(){
 //        BindingContext bindingContext = BindingContext.getCurrent();
 //        DCDataControl dc = bindingContext.getDefaultDataControl();
 //        AppModuleImpl am = (AppModuleImpl) dc.getDataProvider();

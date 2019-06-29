@@ -211,7 +211,7 @@ public class ExtViewObjectImpl extends ViewObjectImpl {
                     currentRowKey = currentRow.getKey();
                     int rangeIndexOfCurrentRow = this.getRangeIndexOf(currentRow);
                     currentRowIndexInRange = rangeIndexOfCurrentRow;
-                } 
+                }
             }
         }
         super.beforeRollback(TransactionEvent);
@@ -469,5 +469,13 @@ public class ExtViewObjectImpl extends ViewObjectImpl {
         } else {
             this.queryLimitApplied = false;
         }
+    }
+
+    public static void XrefreshCurrentRow(Row r) {
+        System.out.println("Inside refresh current row in voimpl class extendation");
+        if (r != null) {
+            r.refresh(r.REFRESH_UNDO_CHANGES | r.REFRESH_WITH_DB_FORGET_CHANGES);
+        }
+
     }
 }

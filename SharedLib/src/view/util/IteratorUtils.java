@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.Application;
-import javax.faces.component.UIComponent;
-
 import javax.faces.context.FacesContext;
 
 import oracle.adf.model.BindingContext;
@@ -15,7 +13,6 @@ import oracle.adf.share.logging.ADFLogger;
 
 import oracle.binding.AttributeBinding;
 import oracle.binding.BindingContainer;
-
 import oracle.binding.OperationBinding;
 
 import oracle.jbo.ApplicationModule;
@@ -28,16 +25,78 @@ import oracle.jbo.ViewObject;
 import oracle.jbo.server.DBTransaction;
 import oracle.jbo.server.EntityImpl;
 import oracle.jbo.server.ViewRowImpl;
-import oracle.jbo.uicli.binding.JUCtrlHierBinding;
 import oracle.jbo.uicli.binding.JUCtrlListBinding;
-
-import org.apache.myfaces.trinidad.context.RequestContext;
 
 public class IteratorUtils {
 
     private ADFLogger _logger = ADFLogger.createADFLogger(IteratorUtils.class);
 
-    public final ADFLogger LOGGER = ADFLogger.createADFLogger(IteratorUtils.class);
+    public static final ADFLogger LOGGER = ADFLogger.createADFLogger(IteratorUtils.class);
+
+    public static BindingContainer getBindings() { // Access Data Control
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    public static FacesContext getFacesContext() { // Access Faces Context - JSF Resources
+        return FacesContext.getCurrentInstance();
+    }
+
+    public static AttributeBinding AccessAttribute(String AttributeName) { // Access AttributeBinding
+        return (AttributeBinding) getBindings().get(AttributeName);
+    }
+
+    public static DCIteratorBinding AccessIteratorBinding(String IteratorName) { // Access IteratorBinding
+        return (DCIteratorBinding) getBindings().get(IteratorName);
+    }
+
+    public static OperationBinding AccessOperation(String OperationName) { // Access OperationBinding
+        return (OperationBinding) getBindings().getOperationBinding(OperationName);
+    }
+
+    public static Map GetParameters(String MyOperation) { // Access Map
+        return getBindings().getOperationBinding(MyOperation).getParamsMap();
+    }
+
+    public static ViewObject GetVO(String IterBinding) { // Access VO of IteratorBinding
+        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
+        return MyIterator.getViewObject();
+    }
+
+    public static String GetWhereClause(String IterBinding) { // Access VO Where of IteratorBinding
+        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
+        return MyIterator.getViewObject().getWhereClause();
+    }
+
+    public static Object[] GetWhereClauseParams(String IterBinding) { // Access VO Where Parameters of IteratorBinding
+        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
+        return MyIterator.getViewObject().getWhereClauseParams();
+    }
+
+    public static Row GetCurrentRow(String IterBinding) { // Access Current Row of IteratorBinding
+        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
+        return MyIterator.getCurrentRow();
+    }
+
+    public static ViewCriteria GetViewCriteria(String IterBinding) { // Access VC Row of IteratorBinding
+        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
+        return MyIterator.getViewCriteria();
+    }
+
+    public static Long GetRowCount(String IterBinding) { // Access Estimated Row Count of IteratorBinding
+        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
+        return MyIterator.getEstimatedRowCount();
+    }
+
+    public static Application GetAppModuleUsingFacesContext() { // Access AM of IteratorBinding
+        return getFacesContext().getApplication();
+    }
+
+
+    public static ApplicationModule GetAppModuleUsingIteratorBinding(String IterBinding) { // Access AM of IteratorBinding
+        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
+        return MyIterator.getDataControl().getApplicationModule();
+    }
+
 
     /** function return application database transaction object */
     public static DBTransaction getDefaultDBTransaction() {
@@ -49,7 +108,7 @@ public class IteratorUtils {
         return (ApplicationModule) JSFUtils.resolveExpression("#{data.AppModuleDataControl.dataProvider}");
     }
 
-    public void printIteratorInfo(String iteratorName) {
+    public static void printIteratorInfo(String iteratorName) {
 
         try {
 
@@ -96,7 +155,7 @@ public class IteratorUtils {
     }
 
 
-    public void printIteratorValues(String iteratorName) {
+    public static void printIteratorValues(String iteratorName) {
 
         try {
 
@@ -131,7 +190,7 @@ public class IteratorUtils {
 
     // GET VALUE FROM ITERATOR
 
-    public Object getValFromIterator(String iteratorName, String attrName) {
+    public static Object getValFromIterator(String iteratorName, String attrName) {
         try {
             return (Object) findIterator(iteratorName).getCurrentRow().getAttribute(attrName);
         } catch (Exception ex) {
@@ -144,7 +203,7 @@ public class IteratorUtils {
 
     // БЫЛО !!!
 
-    //    public   Object getValFromIterator(String iteratorName, String attrName){
+    //    public static    Object getValFromIterator(String iteratorName, String attrName){
     //
     //        try {
     //           DCIteratorBinding dcItteratorBindings =  ADFUtils.findIterator(iteratorName);
@@ -160,7 +219,7 @@ public class IteratorUtils {
     // БЫЛО END!
 
     //
-    //    public   String getValFromIteratorVer2(String vo, String attrName) {
+    //    public static    String getValFromIteratorVer2(String vo, String attrName) {
     //        try {
     //            BindingContainer bindings = BindingContext.getCurrent().getCurrentBindingsEntry();
     //            JUCtrlHierBinding fclb = (JUCtrlHierBinding)bindings.get(vo);
@@ -171,7 +230,7 @@ public class IteratorUtils {
     //        }
     //    }
 
-    //    public   String getValFromIteratorList(String vo, String attrName) {
+    //    public static    String getValFromIteratorList(String vo, String attrName) {
     //        try {
     //            BindingContainer bindings = BindingContext.getCurrent().getCurrentBindingsEntry();
     //            JUCtrlListBinding fclb = (JUCtrlListBinding)bindings.get(vo);
@@ -185,7 +244,7 @@ public class IteratorUtils {
 
     //  Set Iterator Position
 
-    public void setIteratorPositionByAttrValue(String iteratorName, String attrName, String attrValue) {
+    public static void setIteratorPositionByAttrValue(String iteratorName, String attrName, String attrValue) {
         try {
             DCIteratorBinding iterator = findIterator(iteratorName);
             RowSetIterator rsi = iterator.getRowSetIterator();
@@ -219,7 +278,7 @@ public class IteratorUtils {
     }
 
 
-    public void setCurrentRow(String vo, String keyValue) {
+    public static void setCurrentRow(String vo, String keyValue) {
         String trap = "";
         try {
             trap = "1";
@@ -241,13 +300,13 @@ public class IteratorUtils {
 
 
     /** function take viewobject name and refresh this view object */
-    public void refreshViewObject(String viewObjectName) {
+    public static void refreshViewObject(String viewObjectName) {
         ViewObject vo = getDefaultApplicationModule().findViewObject(viewObjectName);
         vo.executeQuery();
     }
 
     /** function take iterator name and refresh the view object of that iterator without losing the current row */
-    public void refreshVOByIteratorName(String iteratorName) {
+    public static void refreshVOByIteratorName(String iteratorName) {
         try {
             DCIteratorBinding locationsIter = findIterator(iteratorName);
             Row lRow = locationsIter.getCurrentRow();
@@ -265,14 +324,14 @@ public class IteratorUtils {
     }
 
     /** function take iterator name and refresh this iterator */
-    public void refreshIterator(String iteratorName) {
+    public static void refreshIterator(String iteratorName) {
         DCIteratorBinding dciter = findIterator(iteratorName);
         dciter.executeQuery();
         dciter.refresh(DCIteratorBinding.RANGESIZE_UNLIMITED);
     }
 
     /** function take iterator name and the attribute name then sum all the attribute values for all rows in the iterator */
-    public double getSumOfAttribute(String iteratorName, String attributeName) {
+    public static double getSumOfAttribute(String iteratorName, String attributeName) {
         DCIteratorBinding dciter = findIterator(iteratorName);
         double sum = 0;
         Row[] rows = dciter.getViewObject().getAllRowsInRange();
@@ -285,7 +344,7 @@ public class IteratorUtils {
     }
 
     /** function take iterator name and the attribute name then sum all the attribute values for all rows in the iterator and return long value*/
-    public long getSumOfAttributeAsLong(String iteratorName, String attributeName) {
+    public static long getSumOfAttributeAsLong(String iteratorName, String attributeName) {
         DCIteratorBinding dciter = findIterator(iteratorName);
         long sum = 0;
         Row[] rows = dciter.getViewObject().getAllRowsInRange();
@@ -297,26 +356,54 @@ public class IteratorUtils {
         return sum;
     }
 
-    /** function take component object and refresh this component */
-    public void refreshComponent(UIComponent component) {
-        RequestContext.getCurrentInstance().addPartialTarget(component);
-    }
 
     /** function take iterator name  then return the current row of the iterator */
-    public Row getCurrentRow(String iteratorName) {
+    public static Row getCurrentRow(String iteratorName) {
         if (findIterator(iteratorName).getCurrentRow() != null) {
             return findIterator(iteratorName).getCurrentRow();
         }
         return null;
     }
 
+    /** function used to rollback any changes to the last commit point without changing current row of the passed iterator, Cancel All changes happened on the iterator*/
+    public static void rollbackAndBeInTheCurrentRow(String iteratorName) {
+        try {
+            DCIteratorBinding locationsIter = findIterator(iteratorName);
+            Row lRow = locationsIter.getCurrentRow();
+            Key key = null;
+            if (lRow != null) {
+                key = lRow.getKey();
+                System.out.println("Printing KEy Value is >> " + key.toString());
+            }
+            IteratorUtils.executeOperation("Rollback");
+            if (key != null) {
+                locationsIter.setCurrentRowWithKey(key.toStringFormat(true));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    /** function to cancel changes in Iterator */
-    public void cancelChangesInIter(String Iter) {
+    /** function For Cancelling any Changes Happened In The Row (Create New Row or Update Row) */
+    public static void cancelChangesInCurrentRow(String iteratorName) {
+        DCIteratorBinding iterBinding = IteratorUtils.getIterator(iteratorName);
+        ViewObject vo = iterBinding.getViewObject();
+        Row currentRow = vo.getCurrentRow();
+        currentRow.refresh(Row.REFRESH_UNDO_CHANGES | Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES);
+    }
+
+    /** function For Cancelling any Changes Happened In The Row (Create New Row or Update Row) */
+    public static void cancelChangesInCurrentRow2(String iteratorName) {
+        findIterator("Employees1Iterator").getCurrentRow()
+            .refresh(Row.REFRESH_UNDO_CHANGES | Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES);
+    }
+
+    /** function to cancel changes in Iterator, All changes happened on the iterator */
+    public static void cancelChangesInIter(String Iter) {
         cancelChangesForRows(Iter, false);
     }
 
-    private void cancelChangesForRows(String name, boolean isVo) {
+    private static void cancelChangesForRows(String name, boolean isVo) {
         ViewObject vo = null;
         if (isVo) {
             vo = VOUtils.getViewObjectByName(name);
@@ -341,38 +428,21 @@ public class IteratorUtils {
         }
     }
 
-    public boolean isRowStatusNew(Row rw) {
+    public static boolean isRowStatusNew(Row rw) {
         return EntityImpl.STATUS_NEW == getRowStatus(rw);
     }
 
-    public boolean isRowStatusUpdate(Row rw) {
+    public static boolean isRowStatusUpdate(Row rw) {
         return EntityImpl.STATUS_MODIFIED == getRowStatus(rw);
     }
 
-    public byte getRowStatus(Row rw) {
+    public static byte getRowStatus(Row rw) {
         if (rw != null) {
             ViewRowImpl myRow = (ViewRowImpl) rw;
             EntityImpl entityImpl = myRow.getEntity(0);
             return entityImpl.getEntityState();
         }
         return -1;
-    }
-
-
-    public static BindingContainer getBindings() { // Access Data Control
-        return BindingContext.getCurrent().getCurrentBindingsEntry();
-    }
-
-    public static FacesContext getFacesContext() { // Access Faces Context - JSF Resources
-        return FacesContext.getCurrentInstance();
-    }
-
-    public AttributeBinding AccessAttribute(String AttributeName) { // Access AttributeBinding
-        return (AttributeBinding) getBindings().get(AttributeName);
-    }
-
-    public DCIteratorBinding AccessIteratorBinding(String IteratorName) { // Access IteratorBinding
-        return (DCIteratorBinding) getBindings().get(IteratorName);
     }
 
     /** function take iterator name and return iterator object */
@@ -404,7 +474,7 @@ public class IteratorUtils {
      * @param iterator
      * @return
      */
-    public DCIteratorBinding findIterator(String bindingContainer, String iterator) {
+    public static DCIteratorBinding findIteratorByBindingContainer(String bindingContainer, String iterator) {
         DCBindingContainer bindings = (DCBindingContainer) JSFUtils.resolveExpression("#{" + bindingContainer + "}");
         if (bindings == null) {
             throw new RuntimeException("Binding container '" + bindingContainer + "' not found");
@@ -417,70 +487,22 @@ public class IteratorUtils {
     }
 
 
-    public OperationBinding AccessOperation(String OperationName) { // Access OperationBinding
-        return (OperationBinding) getBindings().getOperationBinding(OperationName);
-    }
-
-    public Map GetParameters(String MyOperation) { // Access Map
-        return getBindings().getOperationBinding(MyOperation).getParamsMap();
-    }
-
-    public ViewObject GetVO(String IterBinding) { // Access VO of IteratorBinding
-        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
-        return MyIterator.getViewObject();
-    }
-
-    public String GetWhereClause(String IterBinding) { // Access VO Where of IteratorBinding
-        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
-        return MyIterator.getViewObject().getWhereClause();
-    }
-
-    public Object[] GetWhereClauseParams(String IterBinding) { // Access VO Where Parameters of IteratorBinding
-        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
-        return MyIterator.getViewObject().getWhereClauseParams();
-    }
-
-    public Row GetCurrentRow(String IterBinding) { // Access Current Row of IteratorBinding
-        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
-        return MyIterator.getCurrentRow();
-    }
-
-    public ViewCriteria GetViewCriteria(String IterBinding) { // Access VC Row of IteratorBinding
-        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
-        return MyIterator.getViewCriteria();
-    }
-
-    public Long GetRowCount(String IterBinding) { // Access Estimated Row Count of IteratorBinding
-        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
-        return MyIterator.getEstimatedRowCount();
-    }
-
-    public Application GetAppModuleUsingFacesContext() { // Access AM of IteratorBinding
-        return getFacesContext().getApplication();
-    }
-
-
-    public static ApplicationModule GetAppModuleUsingIteratorBinding(String IterBinding) { // Access AM of IteratorBinding
-        DCIteratorBinding MyIterator = (DCIteratorBinding) getBindings().get(IterBinding);
-        return MyIterator.getDataControl().getApplicationModule();
-    }
-
-
     /**
      * Find an operation binding in the current binding container by name.
      *
      * @param name operation binding name
      * @return operation binding
      */
-    public OperationBinding findOperation(String name) {
+    public static OperationBinding findOperation(String name) {
         OperationBinding op = ADFUtils.getDCBindingContainer().getOperationBinding(name);
         if (op == null) {
             throw new RuntimeException("Operation '" + name + "' not found");
         }
         return op;
     }
+
     // as an idea to deal with finding any operation keep in mind or try another time with it.
-    public OperationBinding findAnyOperation() {
+    public static OperationBinding findAnyOperation() {
         OperationBinding op = (OperationBinding) ADFUtils.getDCBindingContainer().getOperationBindings();
         if (op == null) {
             throw new RuntimeException("Operation not found");
@@ -495,7 +517,7 @@ public class IteratorUtils {
      * @param opName operation binding name
      * @return operation binding
      */
-    public OperationBinding findOperation(String bindingContianer, String opName) {
+    public static OperationBinding findOperationInCurrentBindContainer(String bindingContianer, String opName) {
         DCBindingContainer bindings = (DCBindingContainer) JSFUtils.resolveExpression("#{" + bindingContianer + "}");
         if (bindings == null) {
             throw new RuntimeException("Binding container '" + bindingContianer + "' not found");
@@ -508,8 +530,8 @@ public class IteratorUtils {
     }
 
     // Wael Abdeen Class
-    public String ExecuteMethod(String MethodName) { // Execute Method
-        OperationBinding operationBinding = this.AccessOperation(MethodName);
+    public static String ExecuteMethod(String MethodName) { // Execute Method
+        OperationBinding operationBinding = AccessOperation(MethodName);
         Object result = operationBinding.execute();
         if (!operationBinding.getErrors().isEmpty()) {
             return null;
@@ -520,11 +542,11 @@ public class IteratorUtils {
 
     /** function take operation name (from page definition) and execute this operation (e.g Commit, Rollback, Next, CreateInsert, Delete, .....) */
     public static void executeOperation(String operationName) {
-        OperationBinding operationBinding = IteratorUtils.getBindings().getOperationBinding(operationName);
+        OperationBinding operationBinding = getBindings().getOperationBinding(operationName);
         operationBinding.execute();
     }
 
-    public void executeOperationBinding(String exp) {
+    public static void executeOperationBinding(String exp) {
         ((OperationBinding) JSFUtils.resolveExpression(exp)).execute();
     }
 
@@ -532,7 +554,7 @@ public class IteratorUtils {
     /**
      * @param opList
      */
-    public void printOperationBindingExceptions(List opList) {
+    public static void printOperationBindingExceptions(List opList) {
         if (opList != null && !opList.isEmpty()) {
             for (Object error : opList) {
                 LOGGER.severe(error.toString());
@@ -540,7 +562,7 @@ public class IteratorUtils {
         }
     }
 
-    public Object executeOperationBindingNHandleErr(String methodAction, Map param) {
+    public static Object executeOperationBindingNHandleErr(String methodAction, Map param) {
         OperationBinding ob = findOperation(methodAction);
 
         if (param != null) {
@@ -557,12 +579,12 @@ public class IteratorUtils {
 
 
     /** function used to commit changes to database*/
-    public void commit() {
+    public static void commit() {
         getDefaultDBTransaction().commit();
     }
 
     /** function used to rollback any changes to the last commit point*/
-    public void rollback() {
+    public static void rollback() {
         executeOperation("Rollback");
     }
 
