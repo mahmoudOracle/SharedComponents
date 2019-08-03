@@ -372,6 +372,22 @@ public class JSFUtils {
 	
   }
 
+    /** function take a message and display it as Info message (Info icon will appear) */
+    public void showInfoMessage(String message) {
+        FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, null, null);
+        fm.setDetail(message);
+        FacesContext.getCurrentInstance().addMessage(null, fm);
+
+    }
+
+    /** function take a message and display it as Fatal message (Fatal icon will appear) */
+    public void showFatalMessage(String message) {
+        FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_FATAL, null, null);
+        fm.setDetail(message);
+        FacesContext.getCurrentInstance().addMessage(null, fm);
+
+    }
+
     /**
      * Get an HTTP Request attribute.
      * @param name attribute name
@@ -495,7 +511,7 @@ public class JSFUtils {
     * This would redirect to the passed Url
     */
     public  void redirect(String URL) {
-    //logger.info(“Now_redirecting_it_to :�?+URL);
+    //logger.info(“Now_redirecting_it_to :�?+URL);
     FacesContext context = FacesContext.getCurrentInstance();
     ExternalContext externalContext = context.getExternalContext();
     HttpServletRequest req = (HttpServletRequest)context.getExternalContext().getRequest();
@@ -507,7 +523,7 @@ public class JSFUtils {
     } catch (IOException e) {
     // log URL that failed
     // throw it back as RuntimeException
-   // logger.severe(“RedirectionException failed �? + e.getMessage());
+   // logger.severe(“RedirectionException failed �? + e.getMessage());
     throw new RuntimeException(e);
     }
     }
@@ -763,7 +779,7 @@ public class JSFUtils {
 
     /**
      * Refresh an UIComponent.
-     * “faces�?, which is the default
+     * “faces�?, which is the default
      *
      * @param component Component to be refreshed
      */

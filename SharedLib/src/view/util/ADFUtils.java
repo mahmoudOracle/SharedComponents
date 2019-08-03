@@ -3,8 +3,6 @@ package view.util;
 
 import java.io.File;
 
-import com.sun.faces.mgbean.ManagedBeanCreationException;
-
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,7 +17,6 @@ import java.math.BigDecimal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 
 import java.sql.SQLException;
 
@@ -39,7 +36,6 @@ import oracle.adf.share.logging.ADFLogger;
 import oracle.binding.AttributeBinding;
 import oracle.binding.BindingContainer;
 import oracle.binding.ControlBinding;
-import oracle.binding.OperationBinding;
 
 import oracle.jbo.ApplicationModule;
 import oracle.jbo.Key;
@@ -49,21 +45,17 @@ import oracle.jbo.uicli.binding.JUCtrlValueBinding;
 import org.apache.myfaces.trinidad.render.ExtendedRenderKitService;
 import org.apache.myfaces.trinidad.util.Service;
 //////////////////////////////////////////////////////////////
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import java.util.Locale;
 import java.util.Properties;
 
-import java.util.ResourceBundle;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 
-import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
@@ -79,7 +71,6 @@ import oracle.adf.view.rich.component.rich.layout.RichPanelTabbed;
 import oracle.adf.view.rich.component.rich.layout.RichShowDetailItem;
 import oracle.adf.view.rich.context.AdfFacesContext;
 
-import javax.faces.context.FacesContext;
 
 import javax.faces.event.PhaseId;
 
@@ -93,36 +84,19 @@ import javax.servlet.http.HttpSession;
 
 import oracle.adf.model.DataControlFrame;
 import oracle.adf.model.binding.DCDataControl;
-import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.component.rich.RichPopup;
 import oracle.adf.view.rich.component.rich.RichQuery;
 import oracle.adf.view.rich.component.rich.fragment.RichRegion;
-import oracle.adf.view.rich.component.rich.input.RichInputListOfValues;
-import oracle.adf.view.rich.component.rich.input.RichSelectBooleanCheckbox;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
 import oracle.adf.view.rich.component.rich.layout.RichPanelSplitter;
-
-import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
-
-import oracle.adf.view.rich.component.rich.nav.RichCommandToolbarButton;
 
 import oracle.adf.view.rich.model.FilterableQueryDescriptor;
 
 import oracle.adf.view.rich.model.QueryDescriptor;
 import oracle.adf.view.rich.model.QueryModel;
 
-import oracle.javatools.resourcebundle.BundleFactory;
-
-import oracle.jbo.ViewCriteria;
-import oracle.jbo.ViewObject;
-import oracle.jbo.server.DBTransaction;
-
 import oracle.jbo.server.SequenceImpl;
 
-import oracle.jbo.server.ViewRowImpl;
-import oracle.jbo.uicli.binding.JUCtrlListBinding;
-
-import org.apache.myfaces.trinidad.context.RequestContext;
 import org.apache.myfaces.trinidad.model.UploadedFile;
 
 /**
@@ -649,7 +623,7 @@ public class ADFUtils {
     }
 
     /** function take popup id and component id and will show this popup behind with this component */
-    public void showPopup(String popupName, String alignId) {
+    public static void showPopup(String popupName, String alignId) {
         StringBuilder strb = new StringBuilder("var pop = AdfPage.PAGE.findComponentByAbsoluteId(" + popupName + ");");
         strb.append("var hints = {};\n");
         strb.append("hints[AdfRichPopup.HINT_ALIGN_ID] = '" + alignId + "';");
@@ -665,7 +639,7 @@ public class ADFUtils {
     public void showPopup12(@SuppressWarnings("oracle.jdeveloper.java.unused-parameter") String popupId) {
     }
 
-    public void showPopup1(String clientId) {
+    public static void showPopup1(String clientId) {
         FacesContext ctx = FacesContext.getCurrentInstance();
         StringBuilder javaScriptPopup = new StringBuilder("var popObj=AdfPage.PAGE.findComponent('" + clientId + "');");
         javaScriptPopup.append("popObj.show();");
@@ -675,13 +649,13 @@ public class ADFUtils {
         ctx.renderResponse();
     }
 
-    public void showPopup123(String popupId) {
+    public static void showPopup123(String popupId) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService service = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
         service.addScript(facesContext, "AdfPage.PAGE.findComponentByAbsoluteId('generic:" + popupId + "').show();");
     }
 
-    public void showPopup2(RichPopup popup) {
+    public static void showPopup2(RichPopup popup) {
         FacesContext ctx = FacesContext.getCurrentInstance();
         String popupId = popup.getClientId(ctx);
         ExtendedRenderKitService erkService = Service.getService(ctx.getRenderKit(), ExtendedRenderKitService.class);
@@ -690,19 +664,44 @@ public class ADFUtils {
                              "').show(hints);");
     }
 
-    public void showPopupJavaScript(String popupId) {
+    public static void showPopupJavaScript(String popupId) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService service = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
         service.addScript(facesContext, "AdfPage.PAGE.findComponentByAbsoluteId('" + popupId + "').show();");
     }
 
-    public void showPopupJavaScriptAdd() {
+    public static void showPopupJavaScriptAdd() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExtendedRenderKitService service = Service.getRenderKitService(facesContext, ExtendedRenderKitService.class);
         service.addScript(facesContext,
                           "function closeTermsDialog(evt){\n" +
                           "  var checkbox = evt.getSource().findComponent(\"sbc2\");\n" +
                           "  if(checkbox.getSubmittedValue()==false){\n" + "    evt.cancel();\n" + "  }\n" + "}");
+    }
+
+    public static void showPopupAshish(RichPopup pop, boolean visible) {//Popup Bind Variable
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (context != null && pop != null) {
+                String popupId = pop.getClientId(context);
+                if (popupId != null) {
+                    StringBuilder script = new StringBuilder();
+                    script.append("var popup = AdfPage.PAGE.findComponent('")
+                          .append(popupId)
+                          .append("'); ");
+                    if (visible) {
+                        script.append("if (!popup.isPopupVisible()) { ").append("popup.show();}");
+                    } else {
+                        script.append("if (popup.isPopupVisible()) { ").append("popup.hide();}");
+                    }
+                    ExtendedRenderKitService erks =
+                        Service.getService(context.getRenderKit(), ExtendedRenderKitService.class);
+                    erks.addScript(context, script.toString());
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
